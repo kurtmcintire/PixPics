@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PreviewViewController.h"
 
-@interface CameraViewController : UIViewController
+@interface CameraViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *logoLabel;
 
 @end

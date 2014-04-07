@@ -12,7 +12,8 @@
 
 @property (nonatomic, strong) UIImage *image;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
--(void)setImage:(UIImage *)profileImage;
+@property (weak, nonatomic) IBOutlet UIButton *cancel;
+- (IBAction)cancel:(id)sender;
 
 
 @end

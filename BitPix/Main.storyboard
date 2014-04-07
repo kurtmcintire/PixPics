@@ -17,28 +17,17 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BITPIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jko-Yd-VyF">
-                                <rect key="frame" x="20" y="168" width="244" height="97"/>
+                                <rect key="frame" x="38" y="235" width="244" height="97"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nkE-xa-5Sj">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="LqY-8y-3Yv" firstAttribute="top" secondItem="nkE-xa-5Sj" secondAttribute="bottom" id="FfA-gI-LcO"/>
-                            <constraint firstAttribute="trailing" secondItem="nkE-xa-5Sj" secondAttribute="trailing" id="Mh3-56-0sg"/>
-                            <constraint firstItem="nkE-xa-5Sj" firstAttribute="top" secondItem="oci-cH-3BS" secondAttribute="top" id="RiA-sZ-fMD"/>
-                            <constraint firstItem="nkE-xa-5Sj" firstAttribute="leading" secondItem="oci-cH-3BS" secondAttribute="leading" id="lCs-ze-aQg"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="logoLabel" destination="Jko-Yd-VyF" id="7QB-SC-pmq"/>
-                        <outlet property="selectedImageView" destination="nkE-xa-5Sj" id="MqO-4V-dZO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OjW-nc-GyY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -57,14 +46,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wse-Bf-60i">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wse-Bf-60i">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3b-OA-9Z1">
+                                <rect key="frame" x="7" y="20" width="63" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="45"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancel:" destination="Lpq-ay-EHJ" eventType="touchUpInside" id="oHG-3M-MPf"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="cancel" destination="g3b-OA-9Z1" id="2f9-VR-VkR"/>
                         <outlet property="imageView" destination="Wse-Bf-60i" id="T0G-s7-W7L"/>
                     </connections>
                 </viewController>

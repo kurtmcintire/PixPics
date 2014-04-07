@@ -23,12 +23,37 @@
     return self;
 }
 
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:NO];
+    
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+        if([UIScreen mainScreen].bounds.size.height == 568.0)
+        {
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(-105, -190);
+ 
+            [UIView animateWithDuration:.001 animations:^{
+                self.imageView.transform =  translate;
+            }
+                             completion:^(BOOL finished){
+                                 [UIView animateWithDuration:.001 animations:^{
+                                     self.imageView.transform = CGAffineTransformScale(translate, 1.333, 1.3333);
+                                 }];
+                             }];
+
+        }
+    }
+    
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
         [_imageView setImage:_image];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,4 +73,8 @@
 }
 */
 
+- (IBAction)cancel:(id)sender {
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
 @end
