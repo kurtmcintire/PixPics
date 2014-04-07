@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  LaunchViewController.h
 //  BitPix
 //
 //  Created by Matt Holmboe Kurt McIntire on 4/4/14.
@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface LaunchViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *logoLabel;
 
 @end

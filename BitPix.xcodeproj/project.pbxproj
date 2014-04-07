@@ -12,15 +12,18 @@
 		BF15775A18F2F2C60089C782 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF15775918F2F2C60089C782 /* UIKit.framework */; };
 		BF15776018F2F2C60089C782 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF15775E18F2F2C60089C782 /* InfoPlist.strings */; };
 		BF15776218F2F2C60089C782 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15776118F2F2C60089C782 /* main.m */; };
-		BF15776618F2F2C60089C782 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15776518F2F2C60089C782 /* AppDelegate.m */; };
-		BF15776918F2F2C60089C782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF15776718F2F2C60089C782 /* Main.storyboard */; };
-		BF15776C18F2F2C60089C782 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15776B18F2F2C60089C782 /* ViewController.m */; };
 		BF15776E18F2F2C60089C782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF15776D18F2F2C60089C782 /* Images.xcassets */; };
 		BF15777518F2F2C60089C782 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF15777418F2F2C60089C782 /* XCTest.framework */; };
 		BF15777618F2F2C60089C782 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF15775518F2F2C60089C782 /* Foundation.framework */; };
 		BF15777718F2F2C60089C782 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF15775918F2F2C60089C782 /* UIKit.framework */; };
 		BF15777F18F2F2C60089C782 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF15777D18F2F2C60089C782 /* InfoPlist.strings */; };
 		BF15778118F2F2C60089C782 /* BitPixTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15778018F2F2C60089C782 /* BitPixTests.m */; };
+		BF15779018F2F32D0089C782 /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15778B18F2F32D0089C782 /* LaunchViewController.m */; };
+		BF15779118F2F32D0089C782 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15778D18F2F32D0089C782 /* CameraViewController.m */; };
+		BF15779218F2F32D0089C782 /* PreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15778F18F2F32D0089C782 /* PreviewViewController.m */; };
+		BF15779418F2F3370089C782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF15779318F2F3370089C782 /* Main.storyboard */; };
+		BF15779718F2F35D0089C782 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15779618F2F35D0089C782 /* AppDelegate.m */; };
+		BF15779918F2F4410089C782 /* Extrude.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF15779818F2F4410089C782 /* Extrude.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,17 +45,22 @@
 		BF15775F18F2F2C60089C782 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BF15776118F2F2C60089C782 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BF15776318F2F2C60089C782 /* BitPix-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BitPix-Prefix.pch"; sourceTree = "<group>"; };
-		BF15776418F2F2C60089C782 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		BF15776518F2F2C60089C782 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BF15776818F2F2C60089C782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BF15776A18F2F2C60089C782 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		BF15776B18F2F2C60089C782 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		BF15776D18F2F2C60089C782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BF15777318F2F2C60089C782 /* BitPixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BitPixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF15777418F2F2C60089C782 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BF15777C18F2F2C60089C782 /* BitPixTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BitPixTests-Info.plist"; sourceTree = "<group>"; };
 		BF15777E18F2F2C60089C782 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BF15778018F2F2C60089C782 /* BitPixTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BitPixTests.m; sourceTree = "<group>"; };
+		BF15778A18F2F32D0089C782 /* LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchViewController.h; sourceTree = "<group>"; };
+		BF15778B18F2F32D0089C782 /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchViewController.m; sourceTree = "<group>"; };
+		BF15778C18F2F32D0089C782 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		BF15778D18F2F32D0089C782 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		BF15778E18F2F32D0089C782 /* PreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewViewController.h; sourceTree = "<group>"; };
+		BF15778F18F2F32D0089C782 /* PreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewViewController.m; sourceTree = "<group>"; };
+		BF15779318F2F3370089C782 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		BF15779518F2F35D0089C782 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BF15779618F2F35D0089C782 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BF15779818F2F4410089C782 /* Extrude.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Extrude.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,11 +120,15 @@
 		BF15775B18F2F2C60089C782 /* BitPix */ = {
 			isa = PBXGroup;
 			children = (
-				BF15776418F2F2C60089C782 /* AppDelegate.h */,
-				BF15776518F2F2C60089C782 /* AppDelegate.m */,
-				BF15776718F2F2C60089C782 /* Main.storyboard */,
-				BF15776A18F2F2C60089C782 /* ViewController.h */,
-				BF15776B18F2F2C60089C782 /* ViewController.m */,
+				BF15779518F2F35D0089C782 /* AppDelegate.h */,
+				BF15779618F2F35D0089C782 /* AppDelegate.m */,
+				BF15779318F2F3370089C782 /* Main.storyboard */,
+				BF15778A18F2F32D0089C782 /* LaunchViewController.h */,
+				BF15778B18F2F32D0089C782 /* LaunchViewController.m */,
+				BF15778C18F2F32D0089C782 /* CameraViewController.h */,
+				BF15778D18F2F32D0089C782 /* CameraViewController.m */,
+				BF15778E18F2F32D0089C782 /* PreviewViewController.h */,
+				BF15778F18F2F32D0089C782 /* PreviewViewController.m */,
 				BF15776D18F2F2C60089C782 /* Images.xcassets */,
 				BF15775C18F2F2C60089C782 /* Supporting Files */,
 			);
@@ -126,6 +138,7 @@
 		BF15775C18F2F2C60089C782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BF15779818F2F4410089C782 /* Extrude.ttf */,
 				BF15775D18F2F2C60089C782 /* BitPix-Info.plist */,
 				BF15775E18F2F2C60089C782 /* InfoPlist.strings */,
 				BF15776118F2F2C60089C782 /* main.m */,
@@ -228,9 +241,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF15779918F2F4410089C782 /* Extrude.ttf in Resources */,
 				BF15776E18F2F2C60089C782 /* Images.xcassets in Resources */,
 				BF15776018F2F2C60089C782 /* InfoPlist.strings in Resources */,
-				BF15776918F2F2C60089C782 /* Main.storyboard in Resources */,
+				BF15779418F2F3370089C782 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,9 +263,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF15776C18F2F2C60089C782 /* ViewController.m in Sources */,
-				BF15776618F2F2C60089C782 /* AppDelegate.m in Sources */,
+				BF15779118F2F32D0089C782 /* CameraViewController.m in Sources */,
+				BF15779718F2F35D0089C782 /* AppDelegate.m in Sources */,
 				BF15776218F2F2C60089C782 /* main.m in Sources */,
+				BF15779018F2F32D0089C782 /* LaunchViewController.m in Sources */,
+				BF15779218F2F32D0089C782 /* PreviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,14 +296,6 @@
 				BF15775F18F2F2C60089C782 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		BF15776718F2F2C60089C782 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BF15776818F2F2C60089C782 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		BF15777D18F2F2C60089C782 /* InfoPlist.strings */ = {

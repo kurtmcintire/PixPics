@@ -2,17 +2,39 @@
 //  AppDelegate.m
 //  BitPix
 //
-//  Created by Kurt McIntire on 4/7/14.
+//  Created by Matt Holmboe Kurt McIntire on 4/4/14.
 //  Copyright (c) 2014 Vektor Digital. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "LaunchViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LaunchViewController *launchViewController = [storyboard instantiateViewControllerWithIdentifier:@"launchViewController"];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:launchViewController];
+    self.window.rootViewController = navController;
+    [navController setNavigationBarHidden:YES];
+    [self.window makeKeyAndVisible];
+    
+    
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    
+    for (NSString* family in [UIFont familyNames])
+    {
+        NSLog(@"%@", family);
+        
+        for (NSString* name in [UIFont fontNamesForFamilyName: family])
+        {
+            NSLog(@"  %@", name);
+        }
+    }
+    
     return YES;
 }
 							
