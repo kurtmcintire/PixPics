@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  LaunchViewController.h
 //  BitPix
 //
 //  Created by Matt Holmboe Kurt McIntire on 4/4/14.
@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "PreviewViewController.h"
 
 @interface CameraViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *logoLabel;
 
 @end

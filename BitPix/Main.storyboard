@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Launch View Controller-->
+        <!--Camera View Controller-->
         <scene sceneID="Vpj-S5-aod">
             <objects>
-                <viewController storyboardIdentifier="launchViewController" id="2aQ-aa-bny" customClass="LaunchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="cameraViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2aQ-aa-bny" customClass="CameraViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3Dv-1f-OOG"/>
                         <viewControllerLayoutGuide type="bottom" id="LqY-8y-3Yv"/>
@@ -16,48 +16,39 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BITPIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imC-ip-fCT">
-                                <rect key="frame" x="38" y="235" width="244" height="97"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BITPIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jko-Yd-VyF">
+                                <rect key="frame" x="20" y="168" width="244" height="97"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nkE-xa-5Sj">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LqY-8y-3Yv" firstAttribute="top" secondItem="nkE-xa-5Sj" secondAttribute="bottom" id="FfA-gI-LcO"/>
+                            <constraint firstAttribute="trailing" secondItem="nkE-xa-5Sj" secondAttribute="trailing" id="Mh3-56-0sg"/>
+                            <constraint firstItem="nkE-xa-5Sj" firstAttribute="top" secondItem="oci-cH-3BS" secondAttribute="top" id="RiA-sZ-fMD"/>
+                            <constraint firstItem="nkE-xa-5Sj" firstAttribute="leading" secondItem="oci-cH-3BS" secondAttribute="leading" id="lCs-ze-aQg"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="logoLabel" destination="imC-ip-fCT" id="PNe-wo-IIZ"/>
-                        <segue destination="yeg-Bo-U66" kind="modal" identifier="launchToCameraSegue" id="4Oe-rw-TeE"/>
+                        <outlet property="logoLabel" destination="Jko-Yd-VyF" id="7QB-SC-pmq"/>
+                        <outlet property="selectedImageView" destination="nkE-xa-5Sj" id="MqO-4V-dZO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OjW-nc-GyY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-218" y="-24"/>
         </scene>
-        <!--Camera View Controller-->
-        <scene sceneID="AZ8-sL-IAv">
-            <objects>
-                <viewController id="yeg-Bo-U66" customClass="CameraViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tV7-x0-u5k"/>
-                        <viewControllerLayoutGuide type="bottom" id="X8h-pU-Xri"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Qe0-gh-hrt">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Nfm-P1-Qci"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RzP-gF-Bno" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="195" y="-24"/>
-        </scene>
         <!--Preview View Controller-->
         <scene sceneID="qhC-L6-Vbj">
             <objects>
-                <viewController id="Lpq-ay-EHJ" customClass="PreviewViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="previewViewController" id="Lpq-ay-EHJ" customClass="PreviewViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hEu-Ln-N7D"/>
                         <viewControllerLayoutGuide type="bottom" id="ePj-ff-1Ar"/>
@@ -65,12 +56,21 @@
                     <view key="view" contentMode="scaleToFill" id="Qxa-Qw-8Gx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wse-Bf-60i">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="Wse-Bf-60i" id="T0G-s7-W7L"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bcn-oJ-eTe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="561" y="-24"/>
+            <point key="canvasLocation" x="149" y="-24"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

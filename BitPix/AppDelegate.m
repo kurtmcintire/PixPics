@@ -7,15 +7,15 @@
 //
 
 #import "AppDelegate.h"
-#import "LaunchViewController.h"
+#import "CameraViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LaunchViewController *launchViewController = [storyboard instantiateViewControllerWithIdentifier:@"launchViewController"];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:launchViewController];
+    CameraViewController *cameraViewController = [storyboard instantiateViewControllerWithIdentifier:@"cameraViewController"];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     self.window.rootViewController = navController;
     [navController setNavigationBarHidden:YES];
     [self.window makeKeyAndVisible];

@@ -10,4 +10,9 @@
 
 @interface PreviewViewController : UIViewController
 
+@property (nonatomic, strong) UIImage *image;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+-(void)setImage:(UIImage *)profileImage;
+
+
 @end
