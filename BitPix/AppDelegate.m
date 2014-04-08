@@ -20,10 +20,8 @@
     [navController setNavigationBarHidden:YES];
     [self.window makeKeyAndVisible];
     
-    
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     for (NSString* family in [UIFont familyNames])
     {

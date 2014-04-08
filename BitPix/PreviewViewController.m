@@ -9,6 +9,8 @@
 #import "PreviewViewController.h"
 
 @interface PreviewViewController ()
+@property (weak, nonatomic) IBOutlet CSAnimationView *facebookAnimationView;
+@property (weak, nonatomic) IBOutlet CSAnimationView *twitterAnimationView;
 
 @end
 
@@ -28,6 +30,8 @@
 {
     [super viewWillAppear:NO];
     
+    [_imageView setImage:_image];
+    
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
         if([UIScreen mainScreen].bounds.size.height == 568.0)
         {
@@ -41,19 +45,38 @@
                                      self.imageView.transform = CGAffineTransformScale(translate, 1.333, 1.3333);
                                  }];
                              }];
-
         }
     }
     
+    [self.cancelButton setStyle:kFRDLivelyButtonStyleCircleClose animated:YES];
+    [self.cancelButton setOptions:@{kFRDLivelyButtonLineWidth: @(4.0f), kFRDLivelyButtonColor: [UIColor whiteColor]}];
     
+    self.facebookAnimationView.alpha=0.0f;
+    self.twitterAnimationView.alpha=0.0f;
+
 }
+
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.twitterAnimationView.alpha=1.0f;
+    self.facebookAnimationView.alpha=1.0f;
+
+//    [self.twitterAnimationView startCanvasAnimation];
+//    [self.facebookAnimationView startCanvasAnimation];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-        [_imageView setImage:_image];
-    
+
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+
+    [self.cancelButton setStyle:kFRDLivelyButtonStyleClose animated:YES];
+
 }
 
 - (void)didReceiveMemoryWarning
