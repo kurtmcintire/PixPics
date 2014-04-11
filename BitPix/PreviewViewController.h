@@ -10,8 +10,11 @@
 #import "FRDLivelyButton.h"
 #import <Canvas/CSAnimation.h>
 #import <Canvas/CSAnimationView.h>
+#import "GPUImage.h"
+#import  <CoreGraphics/CoreGraphics.h>
 
 @interface PreviewViewController : UIViewController
+
 
 @property (nonatomic, strong) UIImage *image;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;

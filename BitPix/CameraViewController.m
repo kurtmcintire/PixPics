@@ -7,7 +7,7 @@
 //
 
 #import "CameraViewController.h"
-
+BOOL firstLaunch;
 
 @interface CameraViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIGestureRecognizerDelegate>
 {
@@ -17,7 +17,9 @@
 @property(nonatomic, weak) IBOutlet UIButton *saveButton;
 @property(nonatomic, strong) UIImagePickerController *photoPicker;
 @property (nonatomic) IBOutlet UIView *overlayView;
-@property (nonatomic) NSMutableArray *capturedImages;
+
+@property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
+@property (nonatomic, strong) UIImageView *pixelatedImageView;
 
 
 @end
@@ -37,15 +39,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    firstLaunch = YES;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(takePicture)];
     tapGesture.delegate = self;
-    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTapsRequired = 1;
     tapGesture.numberOfTouchesRequired = 1;
     [_photoPicker.view addGestureRecognizer:tapGesture];
     [self.photoPicker.view setUserInteractionEnabled:YES];
-
 }
 
 
@@ -53,6 +57,7 @@
 {
     [super viewWillAppear:YES];
     
+    [_logoLabel setHidden:YES];
     _logoLabel.font = [UIFont fontWithName:@"Extrude" size:80];
     [self.saveButton setHidden:YES];
 }
@@ -60,8 +65,25 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:NO];
+    [super viewDidAppear:YES];
     
+    self.pixelatedImagesArray = [@[] mutableCopy];
+    
+    if (firstLaunch) {
+        [self setupDisplayFiltering];
+        [self performSelector:@selector(showPicker) withObject:nil afterDelay:2.0];
+        firstLaunch = NO;
+        
+    }else
+    {
+        [self showPicker];
+    }
+    
+}
+
+
+-(void)showPicker
+{
     //show camera...
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
@@ -72,6 +94,74 @@
     }
 }
 
+- (void)setupDisplayFiltering;
+{
+    
+    [_logoLabel setHidden:NO];
+
+    CGRect originalRect = self.view.bounds;
+    
+    // screenshot of background image view
+    UIImage * capturedImage = nil;
+    UIGraphicsBeginImageContextWithOptions(originalRect.size, NO, 1.0);
+
+    CGContextRef cgContext = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(cgContext, kCGInterpolationNone);
+    [[self.view layer] renderInContext:cgContext];
+    capturedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.05f];
+
+}
+
+
+-(void)pixelateOutDisplay:(UIImage *)image
+{
+    // build an array of images at different filter levels
+    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
+    for (NSInteger index = 1; index < 60; index++){
+        pixellateFilter.fractionalWidthOfAPixel = index*0.005;
+        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
+        [self.pixelatedImagesArray addObject:filteredImage];
+    }
+    
+    [self showPixellatedImageView];
+
+}
+
+-(void)pixelateInDisplay:(UIImage *)image
+{
+    // build an array of images at different filter levels
+    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
+    for (NSInteger index = 1; index < 50; index++){
+        pixellateFilter.fractionalWidthOfAPixel = (50-index)*0.0009;
+        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
+        [self.pixelatedImagesArray addObject:filteredImage];
+    }
+    
+    [self showPixellatedImageView];
+    
+    [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.0f];
+
+
+}
+
+- (void) showPixellatedImageView {
+    
+    // create a UIImageView from the array of pixellated images, add to view
+    UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    pixelView.animationImages = self.pixelatedImagesArray;
+    pixelView.animationDuration=.50;
+    pixelView.animationRepeatCount=1;
+    pixelView.image = [self.pixelatedImagesArray lastObject];
+    [pixelView startAnimating];
+    
+    self.pixelatedImageView = pixelView;
+    [self.view insertSubview:self.pixelatedImageView aboveSubview:self.view];
+    
+}
+
 - (IBAction)takePhoto:(id)sender
 {
     [self.photoPicker takePicture];
@@ -80,11 +170,7 @@
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)sourceType
 {
-    if (self.capturedImages.count > 0)
-    {
-        [self.capturedImages removeAllObjects];
-    }
-    
+
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
     imagePickerController.sourceType = sourceType;
@@ -193,16 +279,17 @@
     [self.saveButton setHidden:NO];
     
     originalImage = [info valueForKey:UIImagePickerControllerOriginalImage];
-    [self.capturedImages addObject:originalImage];
-    
+    self.photoPicker = nil;
 
-    [self finishAndUpdate];
-    
+
     UIStoryboard *storyboard= [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PreviewViewController *pVC = [[PreviewViewController alloc]init];
     pVC = [storyboard instantiateViewControllerWithIdentifier:@"previewViewController"];
     
     [pVC setImage:originalImage];
+    
+    [self dismissViewControllerAnimated:NO completion:NULL];
+
     [self.navigationController presentViewController:pVC animated:NO completion:nil];
 }
 
@@ -211,55 +298,6 @@
 {
 //    [self dismissViewControllerAnimated:NO completion:NULL];
 }
-
-
-- (void)finishAndUpdate
-{
-    [self dismissViewControllerAnimated:NO completion:NULL];
-    
-    if ([self.capturedImages count] > 0)
-    {
-    // Camera took a single picture.
-    }
-    
-    // To be ready to start again, clear the captured images array.
-    [self.capturedImages removeAllObjects];
-    
-    self.photoPicker = nil;
-}
-
-
-- (IBAction)saveImageToAlbum
-{
-
-    UIImageWriteToSavedPhotosAlbum(originalImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-}
-
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
-{
-    NSString *alertTitle;
-    NSString *alertMessage;
-    
-    if(!error)
-    {
-        alertTitle   = @"Image Saved";
-        alertMessage = @"Image saved to photo album successfully.";
-    }
-    else
-    {
-        alertTitle   = @"Error";
-        alertMessage = @"Unable to save to photo album.";
-    }
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
-                                                    message:alertMessage
-                                                   delegate:self
-                                          cancelButtonTitle:@"Okay"
-                                          otherButtonTitles:nil];
-    [alert show];
-}
-
-
 
 
 @end
