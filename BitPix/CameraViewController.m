@@ -161,6 +161,15 @@ BOOL firstLaunch;
     [self.view insertSubview:self.pixelatedImageView aboveSubview:self.view];
     
 }
+- (IBAction)albumPhoto:(id)sender {
+    
+    [self dismissViewControllerAnimated:NO completion:NULL];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.allowsEditing = NO;
+    imagePicker.delegate = self;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
 
 - (IBAction)takePhoto:(id)sender
 {
@@ -287,16 +296,20 @@ BOOL firstLaunch;
     pVC = [storyboard instantiateViewControllerWithIdentifier:@"previewViewController"];
     
     [pVC setImage:originalImage];
-    
+        
     [self dismissViewControllerAnimated:NO completion:NULL];
 
     [self.navigationController presentViewController:pVC animated:NO completion:nil];
 }
 
 
+
+
+
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-//    [self dismissViewControllerAnimated:NO completion:NULL];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 

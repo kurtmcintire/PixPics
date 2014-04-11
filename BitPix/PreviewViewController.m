@@ -8,9 +8,17 @@
 
 #import "PreviewViewController.h"
 
+typedef enum SocialButtonTags
+{
+    SocialButtonTagFacebook,
+    SocialButtonTagTwitter,
+    
+} SocialButtonTags;
+
 @interface PreviewViewController ()
 @property (weak, nonatomic) IBOutlet CSAnimationView *facebookAnimationView;
 @property (weak, nonatomic) IBOutlet CSAnimationView *twitterAnimationView;
+@property (weak, nonatomic) IBOutlet CSAnimationView *checkmarkAnimationView;
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
 
@@ -55,8 +63,9 @@
     [self.cancelButton setStyle:kFRDLivelyButtonStyleCircleClose animated:YES];
     [self.cancelButton setOptions:@{kFRDLivelyButtonLineWidth: @(4.0f), kFRDLivelyButtonColor: [UIColor whiteColor]}];
     
-    self.facebookAnimationView.alpha=0.0f;
-    self.twitterAnimationView.alpha=0.0f;
+    self.facebookAnimationView.alpha = 0.0f;
+    self.twitterAnimationView.alpha = 0.0f;
+    self.checkmarkAnimationView.alpha = 0.0f;
     
     [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.25f];
 
@@ -66,8 +75,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
     
-    self.twitterAnimationView.alpha=1.0f;
-    self.facebookAnimationView.alpha=1.0f;
+    self.twitterAnimationView.alpha = 1.0f;
+    self.facebookAnimationView.alpha = 1.0f;
+    self.checkmarkAnimationView.alpha = 1.0f;
     
     self.pixelatedImagesArray = [@[] mutableCopy];
 //    [self setupDisplayFiltering];
@@ -133,7 +143,7 @@
     }
 
     // create a UIImageView from the array of pixellated images, add to view
-    UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
     pixelView.animationImages = self.pixelatedImagesArray;
     pixelView.animationDuration=0.5;
     pixelView.animationRepeatCount=1;
@@ -152,38 +162,105 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)saveImageToAlbum
-{
+
+- (IBAction)facebookShare:(id)sender {
     
-    UIImageWriteToSavedPhotosAlbum(_pixelatedImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    {
+        SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        
+        [composeViewController addImage:self.pixelatedImageView.image];
+        NSString *initalTextString = [NSString stringWithFormat:@"I spent traveling miles."];
+        [composeViewController setInitialText:initalTextString];
+        [self presentViewController:composeViewController animated:YES completion:nil];
+
+    } else {
+        [self showUnavailableAlertForServiceType:SLServiceTypeFacebook];
+    }
+    
 }
 
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+- (IBAction)twitterShare:(id)sender {
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+        SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        
+        [composeViewController addImage:self.pixelatedImageView.image];
+        NSString *initalTextString = [NSString stringWithFormat:@"I spent traveling miles."];
+        [composeViewController setInitialText:initalTextString];
+        [self presentViewController:composeViewController animated:YES completion:nil];
+        
+    } else {
+        [self showUnavailableAlertForServiceType:SLServiceTypeTwitter];
+    }
+}
+
+
+
+- (void)showUnavailableAlertForServiceType:(NSString *)serviceType
 {
-    NSString *alertTitle;
-    NSString *alertMessage;
+    NSString *serviceName = @"";
     
-    if(!error)
-    {
-        alertTitle   = @"Image Saved";
-        alertMessage = @"Image saved to photo album successfully.";
+    if (serviceType == SLServiceTypeFacebook) {
+        serviceName = @"Facebook";
     }
-    else
-    {
-        alertTitle   = @"Error";
-        alertMessage = @"Unable to save to photo album.";
+    else if (serviceType == SLServiceTypeTwitter) {
+        serviceName = @"Twitter";
     }
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
-                                                    message:alertMessage
-                                                   delegate:self
-                                          cancelButtonTitle:@"Okay"
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:@"Account"
+                              message:[NSString stringWithFormat:@"Please go to the device settings and add a %@ account in order to share through that service", serviceName]
+                              delegate:nil
+                              cancelButtonTitle:@"Dismiss"
+                              otherButtonTitles:nil];
+    [alertView show];
+}
+
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (IBAction)savePicture:(id)sender {
+    UIImageWriteToSavedPhotosAlbum(_pixelatedImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)cancel:(id)sender {
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+
+    NSString *alertTitle;
+    NSString *alertMessage;
+    
+    if(error)
+    {
+        alertTitle   = @"Error";
+        alertMessage = @"Unable to save to photo album.";
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
+                                                        message:alertMessage
+                                                       delegate:self
+                                              cancelButtonTitle:@"Okay"
+                                              otherButtonTitles:nil];
+        [alert show];
+
+    }
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    
+}
+
+
+
 @end
