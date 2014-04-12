@@ -7,6 +7,7 @@
 //
 
 #import "CameraViewController.h"
+
 BOOL firstLaunch;
 
 @interface CameraViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIGestureRecognizerDelegate>
@@ -20,6 +21,8 @@ BOOL firstLaunch;
 
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
+@property (weak, nonatomic) IBOutlet UIButton *rotateCameraButton;
+- (IBAction)rotateCamera:(id)sender;
 
 
 @end
@@ -58,7 +61,7 @@ BOOL firstLaunch;
     [super viewWillAppear:YES];
     
     [_logoLabel setHidden:YES];
-    _logoLabel.font = [UIFont fontWithName:@"Extrude" size:80];
+    _logoLabel.font = [UIFont fontWithName:@"Extrude" size:90];
     [self.saveButton setHidden:YES];
 }
 
@@ -71,7 +74,6 @@ BOOL firstLaunch;
     
     if (firstLaunch) {
         [self setupDisplayFiltering];
-        [self performSelector:@selector(showPicker) withObject:nil afterDelay:2.0];
         firstLaunch = NO;
         
     }else
@@ -111,22 +113,7 @@ BOOL firstLaunch;
     capturedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.05f];
-
-}
-
-
--(void)pixelateOutDisplay:(UIImage *)image
-{
-    // build an array of images at different filter levels
-    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
-    for (NSInteger index = 1; index < 60; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.005;
-        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
-        [self.pixelatedImagesArray addObject:filteredImage];
-    }
-    
-    [self showPixellatedImageView];
+    [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.25f];
 
 }
 
@@ -142,17 +129,34 @@ BOOL firstLaunch;
     
     [self showPixellatedImageView];
     
-    [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.0f];
+    [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.25f];
+}
+
+-(void)pixelateOutDisplay:(UIImage *)image
+{
+    // build an array of images at different filter levels
+    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
+    for (NSInteger index = 1; index < 60; index++){
+        pixellateFilter.fractionalWidthOfAPixel = index*0.005;
+        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
+        [self.pixelatedImagesArray addObject:filteredImage];
+    }
+    
+    [self showPixellatedImageView];
+    
+    [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.600];
 
 
 }
+
+
 
 - (void) showPixellatedImageView {
     
     // create a UIImageView from the array of pixellated images, add to view
     UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
     pixelView.animationImages = self.pixelatedImagesArray;
-    pixelView.animationDuration=.50;
+    pixelView.animationDuration=0.500;
     pixelView.animationRepeatCount=1;
     pixelView.image = [self.pixelatedImagesArray lastObject];
     [pixelView startAnimating];
@@ -281,6 +285,17 @@ BOOL firstLaunch;
 }
 
 
+- (IBAction)rotateCamera:(id)sender {
+    
+    if (_photoPicker.cameraDevice == UIImagePickerControllerCameraDeviceFront) {
+        _photoPicker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+    }else
+    {
+        _photoPicker.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+    }
+    _rotateCameraButton.selected = !_rotateCameraButton.selected;
+}
+
 // This method is called when an image has been chosen from the library or taken from the camera.
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -288,13 +303,32 @@ BOOL firstLaunch;
     [self.saveButton setHidden:NO];
     
     originalImage = [info valueForKey:UIImagePickerControllerOriginalImage];
+    
     self.photoPicker = nil;
 
+    //assume that the image is loaded in landscape mode from disk
+    if (!_rotateCameraButton.selected) {
+        if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
+        {
+            originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
+                                                       scale: 1.0
+                                                 orientation: UIImageOrientationRight];
+        }
+    }
+    
+    else{
+        if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
+        {
+            originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
+                                                       scale: 1.0
+                                                 orientation: UIImageOrientationLeftMirrored];
+        }
+    }
+    
 
     UIStoryboard *storyboard= [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PreviewViewController *pVC = [[PreviewViewController alloc]init];
     pVC = [storyboard instantiateViewControllerWithIdentifier:@"previewViewController"];
-    
     [pVC setImage:originalImage];
         
     [self dismissViewControllerAnimated:NO completion:NULL];
@@ -304,13 +338,11 @@ BOOL firstLaunch;
 
 
 
-
-
-
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    [self dismissViewControllerAnimated:NO completion:NULL];
 }
+
 
 
 @end
