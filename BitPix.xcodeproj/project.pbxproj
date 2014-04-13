@@ -24,6 +24,14 @@
 		BF15779718F2F35D0089C782 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15779618F2F35D0089C782 /* AppDelegate.m */; };
 		BF15779918F2F4410089C782 /* Extrude.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF15779818F2F4410089C782 /* Extrude.ttf */; };
 		BF8771AC18F88F9900CCE75F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF8771AB18F88F9900CCE75F /* Social.framework */; };
+		BFC1D62C18FAD96E00C465C8 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62518FAD96E00C465C8 /* camera.png */; };
+		BFC1D62D18FAD96E00C465C8 /* cameraRoll.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62618FAD96E00C465C8 /* cameraRoll.png */; };
+		BFC1D62E18FAD96E00C465C8 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62718FAD96E00C465C8 /* cancel.png */; };
+		BFC1D62F18FAD96E00C465C8 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62818FAD96E00C465C8 /* facebook.png */; };
+		BFC1D63018FAD96E00C465C8 /* ok.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62918FAD96E00C465C8 /* ok.png */; };
+		BFC1D63118FAD96E00C465C8 /* reverseCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62A18FAD96E00C465C8 /* reverseCamera.png */; };
+		BFC1D63218FAD96E00C465C8 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62B18FAD96E00C465C8 /* twitter.png */; };
+		BFC1D63418FAD99700C465C8 /* MinneapolisBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D63318FAD99700C465C8 /* MinneapolisBackground.png */; };
 		D7230BAD18F8EE7F001E2425 /* camera rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = D7230BAC18F8EE7F001E2425 /* camera rotate.png */; };
 		D7D5766518F34FC400CDEBB2 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D5766318F34FC400CDEBB2 /* CameraViewController.m */; };
 		D7D5766618F34FC400CDEBB2 /* Overlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D5766418F34FC400CDEBB2 /* Overlay.xib */; };
@@ -71,6 +79,14 @@
 		BF15779618F2F35D0089C782 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BF15779818F2F4410089C782 /* Extrude.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Extrude.ttf; sourceTree = "<group>"; };
 		BF8771AB18F88F9900CCE75F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		BFC1D62518FAD96E00C465C8 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		BFC1D62618FAD96E00C465C8 /* cameraRoll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameraRoll.png; sourceTree = "<group>"; };
+		BFC1D62718FAD96E00C465C8 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
+		BFC1D62818FAD96E00C465C8 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		BFC1D62918FAD96E00C465C8 /* ok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ok.png; sourceTree = "<group>"; };
+		BFC1D62A18FAD96E00C465C8 /* reverseCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reverseCamera.png; sourceTree = "<group>"; };
+		BFC1D62B18FAD96E00C465C8 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
+		BFC1D63318FAD99700C465C8 /* MinneapolisBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MinneapolisBackground.png; sourceTree = "<group>"; };
 		D7230BAC18F8EE7F001E2425 /* camera rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera rotate.png"; sourceTree = "<group>"; };
 		D7D5766218F34FC400CDEBB2 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		D7D5766318F34FC400CDEBB2 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
@@ -176,6 +192,14 @@
 		BF15775C18F2F2C60089C782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BFC1D63318FAD99700C465C8 /* MinneapolisBackground.png */,
+				BFC1D62518FAD96E00C465C8 /* camera.png */,
+				BFC1D62618FAD96E00C465C8 /* cameraRoll.png */,
+				BFC1D62718FAD96E00C465C8 /* cancel.png */,
+				BFC1D62818FAD96E00C465C8 /* facebook.png */,
+				BFC1D62918FAD96E00C465C8 /* ok.png */,
+				BFC1D62A18FAD96E00C465C8 /* reverseCamera.png */,
+				BFC1D62B18FAD96E00C465C8 /* twitter.png */,
 				D7230BAC18F8EE7F001E2425 /* camera rotate.png */,
 				D7FF745418F3C7CE0061D1A7 /* facebookImage.png */,
 				D7FF745518F3C7CE0061D1A7 /* twitterImage.png */,
@@ -301,12 +325,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC1D63018FAD96E00C465C8 /* ok.png in Resources */,
+				BFC1D63118FAD96E00C465C8 /* reverseCamera.png in Resources */,
 				BF15779918F2F4410089C782 /* Extrude.ttf in Resources */,
+				BFC1D62F18FAD96E00C465C8 /* facebook.png in Resources */,
+				BFC1D62D18FAD96E00C465C8 /* cameraRoll.png in Resources */,
 				BF15776E18F2F2C60089C782 /* Images.xcassets in Resources */,
 				D7D5766618F34FC400CDEBB2 /* Overlay.xib in Resources */,
+				BFC1D62E18FAD96E00C465C8 /* cancel.png in Resources */,
 				D7FF745618F3C7CE0061D1A7 /* facebookImage.png in Resources */,
+				BFC1D62C18FAD96E00C465C8 /* camera.png in Resources */,
 				D7230BAD18F8EE7F001E2425 /* camera rotate.png in Resources */,
+				BFC1D63418FAD99700C465C8 /* MinneapolisBackground.png in Resources */,
 				BF15776018F2F2C60089C782 /* InfoPlist.strings in Resources */,
+				BFC1D63218FAD96E00C465C8 /* twitter.png in Resources */,
 				BF15779418F2F3370089C782 /* Main.storyboard in Resources */,
 				D7FF745718F3C7CE0061D1A7 /* twitterImage.png in Resources */,
 			);

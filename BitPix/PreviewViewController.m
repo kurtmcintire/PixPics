@@ -19,6 +19,7 @@ typedef enum SocialButtonTags
 @property (weak, nonatomic) IBOutlet CSAnimationView *facebookAnimationView;
 @property (weak, nonatomic) IBOutlet CSAnimationView *twitterAnimationView;
 @property (weak, nonatomic) IBOutlet CSAnimationView *checkmarkAnimationView;
+@property (weak, nonatomic) IBOutlet CSAnimationView *cancelAnimationView;
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
 
@@ -60,12 +61,11 @@ typedef enum SocialButtonTags
         }
     }
     
-    [self.cancelButton setStyle:kFRDLivelyButtonStyleCircleClose animated:YES];
-    [self.cancelButton setOptions:@{kFRDLivelyButtonLineWidth: @(4.0f), kFRDLivelyButtonColor: [UIColor whiteColor]}];
     
     self.facebookAnimationView.alpha = 0.0f;
     self.twitterAnimationView.alpha = 0.0f;
     self.checkmarkAnimationView.alpha = 0.0f;
+    self.cancelAnimationView.alpha = 0.0f;
     
     [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.25f];
 
@@ -78,6 +78,7 @@ typedef enum SocialButtonTags
     self.twitterAnimationView.alpha = 1.0f;
     self.facebookAnimationView.alpha = 1.0f;
     self.checkmarkAnimationView.alpha = 1.0f;
+    self.cancelAnimationView.alpha = 1.0f;
     
     self.pixelatedImagesArray = [@[] mutableCopy];
 //    [self setupDisplayFiltering];
@@ -90,7 +91,6 @@ typedef enum SocialButtonTags
     // Do any additional setup after loading the view.
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    [self.cancelButton setStyle:kFRDLivelyButtonStyleClose animated:YES];
 }
 
 

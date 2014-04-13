@@ -113,7 +113,9 @@ BOOL firstLaunch;
     capturedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+//    [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.25f];
     [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.25f];
+
 
 }
 
@@ -128,7 +130,6 @@ BOOL firstLaunch;
     }
     
     [self showPixellatedImageView];
-    
     [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.25f];
 }
 
@@ -143,7 +144,6 @@ BOOL firstLaunch;
     }
     
     [self showPixellatedImageView];
-    
     [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.600];
 
 
