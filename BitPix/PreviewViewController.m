@@ -20,6 +20,12 @@ typedef enum SocialButtonTags
 @property (weak, nonatomic) IBOutlet CSAnimationView *twitterAnimationView;
 @property (weak, nonatomic) IBOutlet CSAnimationView *checkmarkAnimationView;
 @property (weak, nonatomic) IBOutlet CSAnimationView *cancelAnimationView;
+
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
+@property (weak, nonatomic) IBOutlet UIButton *twitterButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
 
@@ -68,6 +74,7 @@ typedef enum SocialButtonTags
     self.cancelAnimationView.alpha = 0.0f;
     
     [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.25f];
+    
 
 }
 
@@ -156,6 +163,7 @@ typedef enum SocialButtonTags
     
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -164,7 +172,6 @@ typedef enum SocialButtonTags
 
 
 - (IBAction)facebookShare:(id)sender {
-    
     
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {

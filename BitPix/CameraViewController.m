@@ -96,6 +96,7 @@ BOOL firstLaunch;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
+
     }else
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
@@ -173,6 +174,17 @@ BOOL firstLaunch;
 }
 
 
+- (void)rotateImageView {
+    CABasicAnimation *rotate =
+    [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+    rotate.byValue = @(M_PI*2); // Change to - angle for counter clockwise rotation
+    rotate.duration = 3.0f;
+    rotate.repeatCount = HUGE_VALF;
+    
+    [_cameraButton.layer addAnimation:rotate
+                               forKey:@"myRotationAnimation"];
+}
+
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)sourceType
 {
@@ -197,7 +209,7 @@ BOOL firstLaunch;
         imagePickerController.showsCameraControls = NO;
         imagePickerController.navigationBarHidden = YES;
         imagePickerController.toolbarHidden = YES;
-        
+        [self rotateImageView];
         
         //For iphone 5+
         //Camera is 426 * 320. Screen height is 568.  Multiply by 1.333 in 5 inch to fill vertical
@@ -227,7 +239,6 @@ BOOL firstLaunch;
 }
 
 
-
 -(void)showPhotoPicker
 {
     NSLog(@"%@", @"Taking a picture...");
@@ -240,6 +251,8 @@ BOOL firstLaunch;
         _photoPicker.showsCameraControls = NO;
         _photoPicker.navigationBarHidden = YES;
         _photoPicker.toolbarHidden = YES;
+        
+        
         
 
         [[NSBundle mainBundle] loadNibNamed:@"Overlay" owner:self options:nil];
@@ -276,6 +289,9 @@ BOOL firstLaunch;
         
     }
 }
+
+
+
 
 - (IBAction)takePhoto:(id)sender {
     [self.photoPicker takePicture];

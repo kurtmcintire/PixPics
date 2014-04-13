@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2aQ-aa-bny">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2aQ-aa-bny">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -58,7 +58,7 @@
                                 <rect key="frame" x="20" y="489" width="59" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0m-uw-oe3" userLabel="facebookShare">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0m-uw-oe3" userLabel="facebookButton">
                                         <rect key="frame" x="0.0" y="0.0" width="59" height="59"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="facebook.png">
@@ -83,7 +83,7 @@
                                 <rect key="frame" x="241" y="489" width="59" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSw-aI-9KV" userLabel="savePicture">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSw-aI-9KV" userLabel="saveButton">
                                         <rect key="frame" x="0.0" y="0.0" width="59" height="59"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="ok.png">
@@ -108,7 +108,7 @@
                                 <rect key="frame" x="87" y="489" width="59" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Pv-ql-cy8" userLabel="twitterShare">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Pv-ql-cy8" userLabel="twitterButton">
                                         <rect key="frame" x="0.0" y="0.0" width="59" height="59"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="twitter.png">
@@ -133,7 +133,7 @@
                                 <rect key="frame" x="20" y="20" width="36" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22Y-L6-TPb" userLabel="cancel">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22Y-L6-TPb" userLabel="cancelButton">
                                         <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="cancel.png">
@@ -159,10 +159,14 @@
                     </view>
                     <connections>
                         <outlet property="cancelAnimationView" destination="f9B-ii-OyX" id="FOE-Dc-bqo"/>
+                        <outlet property="cancelButton" destination="22Y-L6-TPb" id="760-2w-fGu"/>
                         <outlet property="checkmarkAnimationView" destination="aZx-47-zv9" id="MeY-Zg-kwZ"/>
                         <outlet property="facebookAnimationView" destination="0jP-a8-FsG" id="beC-G1-nKe"/>
+                        <outlet property="facebookButton" destination="D0m-uw-oe3" id="RMm-gs-Lsv"/>
                         <outlet property="imageView" destination="Wse-Bf-60i" id="T0G-s7-W7L"/>
+                        <outlet property="saveButton" destination="lSw-aI-9KV" id="IIo-tr-dDl"/>
                         <outlet property="twitterAnimationView" destination="PqI-8W-WLQ" id="Upe-mr-EOj"/>
+                        <outlet property="twitterButton" destination="1Pv-ql-cy8" id="1pp-jd-tD2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bcn-oJ-eTe" userLabel="First Responder" sceneMemberID="firstResponder"/>

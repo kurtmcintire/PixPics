@@ -23,6 +23,7 @@
 		BF15779418F2F3370089C782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF15779318F2F3370089C782 /* Main.storyboard */; };
 		BF15779718F2F35D0089C782 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15779618F2F35D0089C782 /* AppDelegate.m */; };
 		BF15779918F2F4410089C782 /* Extrude.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF15779818F2F4410089C782 /* Extrude.ttf */; };
+		BF320C0718FB3983001B9F31 /* cameraTick.png in Resources */ = {isa = PBXBuildFile; fileRef = BF320C0618FB3983001B9F31 /* cameraTick.png */; };
 		BF8771AC18F88F9900CCE75F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF8771AB18F88F9900CCE75F /* Social.framework */; };
 		BFC1D62C18FAD96E00C465C8 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62518FAD96E00C465C8 /* camera.png */; };
 		BFC1D62D18FAD96E00C465C8 /* cameraRoll.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC1D62618FAD96E00C465C8 /* cameraRoll.png */; };
@@ -78,6 +79,7 @@
 		BF15779518F2F35D0089C782 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BF15779618F2F35D0089C782 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BF15779818F2F4410089C782 /* Extrude.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Extrude.ttf; sourceTree = "<group>"; };
+		BF320C0618FB3983001B9F31 /* cameraTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameraTick.png; sourceTree = "<group>"; };
 		BF8771AB18F88F9900CCE75F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		BFC1D62518FAD96E00C465C8 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		BFC1D62618FAD96E00C465C8 /* cameraRoll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameraRoll.png; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			children = (
 				BFC1D63318FAD99700C465C8 /* MinneapolisBackground.png */,
 				BFC1D62518FAD96E00C465C8 /* camera.png */,
+				BF320C0618FB3983001B9F31 /* cameraTick.png */,
 				BFC1D62618FAD96E00C465C8 /* cameraRoll.png */,
 				BFC1D62718FAD96E00C465C8 /* cancel.png */,
 				BFC1D62818FAD96E00C465C8 /* facebook.png */,
@@ -325,6 +328,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF320C0718FB3983001B9F31 /* cameraTick.png in Resources */,
 				BFC1D63018FAD96E00C465C8 /* ok.png in Resources */,
 				BFC1D63118FAD96E00C465C8 /* reverseCamera.png in Resources */,
 				BF15779918F2F4410089C782 /* Extrude.ttf in Resources */,
