@@ -22,6 +22,12 @@ BOOL firstLaunch;
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
 @property (weak, nonatomic) IBOutlet UIButton *rotateCameraButton;
+@property (weak, nonatomic) IBOutlet UIButton *albumButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraButton;
+
+
+- (IBAction)takePhoto:(id)sender;
+- (IBAction)albumAction:(id)sender;
 - (IBAction)rotateCamera:(id)sender;
 
 
@@ -119,7 +125,7 @@ BOOL firstLaunch;
 
 }
 
--(void)pixelateInDisplay:(UIImage *)image
+- (void)pixelateInDisplay:(UIImage *)image
 {
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
@@ -165,21 +171,8 @@ BOOL firstLaunch;
     [self.view insertSubview:self.pixelatedImageView aboveSubview:self.view];
     
 }
-- (IBAction)albumPhoto:(id)sender {
-    
-    [self dismissViewControllerAnimated:NO completion:NULL];
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePicker.allowsEditing = NO;
-    imagePicker.delegate = self;
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
 
-- (IBAction)takePhoto:(id)sender
-{
-    [self.photoPicker takePicture];
 
-}
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)sourceType
 {
@@ -284,6 +277,20 @@ BOOL firstLaunch;
     }
 }
 
+- (IBAction)takePhoto:(id)sender {
+    [self.photoPicker takePicture];
+    
+}
+
+- (IBAction)albumAction:(id)sender {
+    
+    [self dismissViewControllerAnimated:NO completion:NULL];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.allowsEditing = NO;
+    imagePicker.delegate = self;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
 
 - (IBAction)rotateCamera:(id)sender {
     
