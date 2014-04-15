@@ -7,6 +7,7 @@
 //
 
 #import "CameraViewController.h"
+#import <Canvas/CSAnimationView.h>
 
 BOOL firstLaunch;
 
@@ -15,26 +16,26 @@ BOOL firstLaunch;
     UIImage *originalImage;
 }
 
-@property(nonatomic, weak) IBOutlet UIButton *saveButton;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
+@property (weak, nonatomic) IBOutlet CSAnimationView *bitPixView;
 @property(nonatomic, strong) UIImagePickerController *photoPicker;
 @property (nonatomic) IBOutlet UIView *overlayView;
-
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
 @property (weak, nonatomic) IBOutlet UIButton *rotateCameraButton;
 @property (weak, nonatomic) IBOutlet UIButton *albumButton;
 @property (weak, nonatomic) IBOutlet UIButton *cameraButton;
+@property (nonatomic, strong) NSTimer *timer;
+
+
 
 
 - (IBAction)takePhoto:(id)sender;
 - (IBAction)albumAction:(id)sender;
 - (IBAction)rotateCamera:(id)sender;
-
-
 @end
 
 @implementation CameraViewController
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,6 +60,9 @@ BOOL firstLaunch;
     tapGesture.numberOfTouchesRequired = 1;
     [_photoPicker.view addGestureRecognizer:tapGesture];
     [self.photoPicker.view setUserInteractionEnabled:YES];
+    
+    [self.cameraButton setImage:[UIImage imageNamed:@"cameraTick.png"] forState:UIControlStateNormal];
+    
 }
 
 
@@ -67,8 +71,9 @@ BOOL firstLaunch;
     [super viewWillAppear:YES];
     
     [_logoLabel setHidden:YES];
+    [self.backgroundImage setAlpha:1.0];
+    [self.logoLabel setAlpha:0.0];
     _logoLabel.font = [UIFont fontWithName:@"Extrude" size:90];
-    [self.saveButton setHidden:YES];
 }
 
 
@@ -76,7 +81,7 @@ BOOL firstLaunch;
 {
     [super viewDidAppear:YES];
     
-    self.pixelatedImagesArray = [@[] mutableCopy];
+    self.pixelatedImagesArray = [NSMutableArray array];
     
     if (firstLaunch) {
         [self setupDisplayFiltering];
@@ -86,7 +91,6 @@ BOOL firstLaunch;
     {
         [self showPicker];
     }
-    
 }
 
 
@@ -96,49 +100,48 @@ BOOL firstLaunch;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
+        
+        [self.cameraButton setImage:[UIImage imageNamed:@"cameraTick.png"] forState:UIControlStateNormal];
+        [self performSelector:@selector(setUpTimer) withObject:nil afterDelay:1.0f];
 
     }else
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        _timer = nil;
     }
 }
+
 
 - (void)setupDisplayFiltering;
 {
     
     [_logoLabel setHidden:NO];
-
-    CGRect originalRect = self.view.bounds;
     
     // screenshot of background image view
     UIImage * capturedImage = nil;
-    UIGraphicsBeginImageContextWithOptions(originalRect.size, NO, 1.0);
-
+    UIGraphicsBeginImageContextWithOptions(self.backgroundImage.bounds.size, NO, 1.0);
     CGContextRef cgContext = UIGraphicsGetCurrentContext();
     CGContextSetInterpolationQuality(cgContext, kCGInterpolationNone);
-    [[self.view layer] renderInContext:cgContext];
+    [[self.backgroundImage layer] renderInContext:cgContext];
     capturedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-//    [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.25f];
-    [self performSelector:@selector(pixelateInDisplay:) withObject:capturedImage afterDelay:0.25f];
-
-
+    [self performSelector:@selector(pixelateOutDisplay:) withObject:capturedImage afterDelay:0.5f];
 }
 
-- (void)pixelateInDisplay:(UIImage *)image
-{
-    // build an array of images at different filter levels
-    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
-    for (NSInteger index = 1; index < 50; index++){
-        pixellateFilter.fractionalWidthOfAPixel = (50-index)*0.0009;
-        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
-        [self.pixelatedImagesArray addObject:filteredImage];
-    }
-    
-    [self showPixellatedImageView];
-    [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.25f];
-}
+//- (void)pixelateInDisplay:(UIImage *)image
+//{
+//    // build an array of images at different filter levels
+//    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
+//    for (NSInteger index = 1; index < 50; index++){
+//        pixellateFilter.fractionalWidthOfAPixel = (50-index)*0.0009;
+//        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
+//        [self.pixelatedImagesArray addObject:filteredImage];
+//    }
+//    
+//    [self showPixellatedImageView];
+//    [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.25f];
+//}
 
 -(void)pixelateOutDisplay:(UIImage *)image
 {
@@ -151,17 +154,78 @@ BOOL firstLaunch;
     }
     
     [self showPixellatedImageView];
-    [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.600];
-
-
+    [self performSelector:@selector(performAnimations:) withObject:image afterDelay:0.600];
 }
 
+
+-(void)performAnimations:(UIImage *)image
+{
+    [self.view bringSubviewToFront:self.bitPixView];
+    [self.view startCanvasAnimation];
+    [self.logoLabel setAlpha:1.0];
+
+    [UIView animateWithDuration:0.60f animations:^{
+        [self.backgroundImage setAlpha:0];
+    }completion:^(BOOL finished){
+             [UIView animateWithDuration:0.50f delay:1.25f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                 [self.pixelatedImageView setAlpha:0];
+                 self.pixelatedImagesArray = nil;
+                 self.pixelatedImageView = nil;
+            }completion:^(BOOL finished){
+                         [UIView animateWithDuration:0.20f animations:^{
+                         [self.logoLabel setAlpha:0.0];
+                         }completion:^(BOOL finished){
+                             [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.05];
+
+                         }];
+            }];
+    }];
+}
 
 
 - (void) showPixellatedImageView {
     
     // create a UIImageView from the array of pixellated images, add to view
-    UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.backgroundImage.frame];
+    pixelView.animationImages = self.pixelatedImagesArray;
+    pixelView.animationDuration=0.500;
+    pixelView.animationRepeatCount=1;
+    pixelView.image = [self.pixelatedImagesArray lastObject];
+    [pixelView startAnimating];
+    
+    self.pixelatedImageView = pixelView;
+    [self.view insertSubview:self.pixelatedImageView aboveSubview:self.view];
+}
+
+
+-(void)pixelateCameraButton
+{
+    
+    if (self.pixelatedImagesArray.count==0) {
+//        self.pixelatedImageView = nil;
+//        self.pixelatedImagesArray = nil;
+//        
+//        self.pixelatedImagesArray = [[NSMutableArray alloc]init];
+//        self.pixelatedImageView = [[UIImageView alloc]init];
+        
+        // build an array of images at different filter levels
+        GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
+        for (NSInteger index = 1; index < 60; index++){
+            pixellateFilter.fractionalWidthOfAPixel = (60-index)*0.0009;
+            UIImage * filteredImage = [pixellateFilter imageByFilteringImage:self.cameraButton.imageView.image];
+            [self.pixelatedImagesArray addObject:filteredImage];
+        }
+    }
+
+    NSLog(@"image array count = %u", self.pixelatedImagesArray.count);
+    [self showPixellatedCameraImageView];
+}
+
+
+- (void) showPixellatedCameraImageView
+{
+    // create a UIImageView from the array of pixellated images, add to view
+    UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.cameraButton.frame];
     pixelView.animationImages = self.pixelatedImagesArray;
     pixelView.animationDuration=0.500;
     pixelView.animationRepeatCount=1;
@@ -174,16 +238,25 @@ BOOL firstLaunch;
 }
 
 
-- (void)rotateImageView {
-    CABasicAnimation *rotate =
-    [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-    rotate.byValue = @(M_PI*2); // Change to - angle for counter clockwise rotation
-    rotate.duration = 3.0f;
-    rotate.repeatCount = HUGE_VALF;
-    
-    [_cameraButton.layer addAnimation:rotate
-                               forKey:@"myRotationAnimation"];
+
+- (void) setUpTimer {
+    [NSTimer scheduledTimerWithTimeInterval:10
+                                     target:self
+                                   selector:@selector(pixelateCameraButton)
+                                   userInfo:nil
+                                    repeats:YES];
 }
+
+//- (void)rotateImageView {
+//    CABasicAnimation *rotate =
+//    [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+//    rotate.byValue = @(M_PI*2); // Change to - angle for counter clockwise rotation
+//    rotate.duration = 3.0f;
+//    rotate.repeatCount = HUGE_VALF;
+//    
+//    [_cameraButton.layer addAnimation:rotate
+//                               forKey:@"myRotationAnimation"];
+//}
 
 
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)sourceType
@@ -209,7 +282,6 @@ BOOL firstLaunch;
         imagePickerController.showsCameraControls = NO;
         imagePickerController.navigationBarHidden = YES;
         imagePickerController.toolbarHidden = YES;
-        [self rotateImageView];
         
         //For iphone 5+
         //Camera is 426 * 320. Screen height is 568.  Multiply by 1.333 in 5 inch to fill vertical
@@ -236,60 +308,8 @@ BOOL firstLaunch;
 
     self.photoPicker = imagePickerController;
     [self presentViewController:self.photoPicker animated:NO completion:nil];
-}
-
-
--(void)showPhotoPicker
-{
-    NSLog(@"%@", @"Taking a picture...");
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        _photoPicker = [[UIImagePickerController alloc] init];
-        _photoPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        _photoPicker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-        _photoPicker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        _photoPicker.showsCameraControls = NO;
-        _photoPicker.navigationBarHidden = YES;
-        _photoPicker.toolbarHidden = YES;
-        
-        
-        
-
-        [[NSBundle mainBundle] loadNibNamed:@"Overlay" owner:self options:nil];
-        self.overlayView.frame = _photoPicker.cameraOverlayView.frame;
-        _photoPicker.cameraOverlayView = self.overlayView;
-        self.overlayView = nil;
-        
-        
-        //For iphone 5+
-        //Camera is 426 * 320. Screen height is 568.  Multiply by 1.333 in 5 inch to fill vertical
-        
-        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
-            if([UIScreen mainScreen].bounds.size.height == 568.0)
-            {
-                CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
-                
-                //This slots the preview exactly in the middle of the screen by moving it down 71 points
-                _photoPicker.cameraViewTransform = translate;
-                
-                CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
-                _photoPicker.cameraViewTransform = scale;
-            }
-        }
     
-        [self presentViewController:_photoPicker animated:YES completion:NULL];
-
-    }else{
-        _photoPicker = [[UIImagePickerController alloc] init];
-        _photoPicker.delegate = self;
-        _photoPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        _photoPicker.allowsEditing = YES;
-        
-        [self presentViewController:_photoPicker animated:YES completion:NULL];
-        
-    }
 }
-
 
 
 
@@ -322,9 +342,6 @@ BOOL firstLaunch;
 // This method is called when an image has been chosen from the library or taken from the camera.
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    self.saveButton.enabled = YES;
-    [self.saveButton setHidden:NO];
-    
     originalImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
     self.photoPicker = nil;

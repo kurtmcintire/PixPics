@@ -121,7 +121,7 @@ typedef enum SocialButtonTags
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
     for (NSInteger index = 1; index < 40; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.00030;
+        pixellateFilter.fractionalWidthOfAPixel = index*0.00040;
         UIImage * filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
