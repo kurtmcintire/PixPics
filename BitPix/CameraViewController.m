@@ -63,6 +63,8 @@ BOOL firstLaunch;
     
     [self.cameraButton setImage:[UIImage imageNamed:@"cameraTick.png"] forState:UIControlStateNormal];
     
+    [self setUpTimer];
+
 }
 
 
@@ -74,6 +76,14 @@ BOOL firstLaunch;
     [self.backgroundImage setAlpha:1.0];
     [self.logoLabel setAlpha:0.0];
     _logoLabel.font = [UIFont fontWithName:@"Extrude" size:90];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    
+    _timer = nil;
+    [_timer invalidate];
 }
 
 
@@ -100,15 +110,12 @@ BOOL firstLaunch;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
-        
-        [self.cameraButton setImage:[UIImage imageNamed:@"cameraTick.png"] forState:UIControlStateNormal];
-        [self performSelector:@selector(setUpTimer) withObject:nil afterDelay:1.0f];
 
     }else
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        _timer = nil;
     }
+    
 }
 
 
@@ -149,6 +156,7 @@ BOOL firstLaunch;
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
     for (NSInteger index = 1; index < 60; index++){
         pixellateFilter.fractionalWidthOfAPixel = index*0.005;
+        
         UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
@@ -202,28 +210,28 @@ BOOL firstLaunch;
 {
     
     if (self.pixelatedImagesArray.count==0) {
-//        self.pixelatedImageView = nil;
-//        self.pixelatedImagesArray = nil;
-//        
-//        self.pixelatedImagesArray = [[NSMutableArray alloc]init];
-//        self.pixelatedImageView = [[UIImageView alloc]init];
+
+        self.pixelatedImagesArray = [[NSMutableArray alloc]init];
         
         // build an array of images at different filter levels
         GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
         for (NSInteger index = 1; index < 60; index++){
             pixellateFilter.fractionalWidthOfAPixel = (60-index)*0.0009;
+            
+            
             UIImage * filteredImage = [pixellateFilter imageByFilteringImage:self.cameraButton.imageView.image];
             [self.pixelatedImagesArray addObject:filteredImage];
         }
     }
 
-    NSLog(@"image array count = %u", self.pixelatedImagesArray.count);
     [self showPixellatedCameraImageView];
 }
 
 
 - (void) showPixellatedCameraImageView
 {
+    [self.pixelatedImageView removeFromSuperview];
+
     // create a UIImageView from the array of pixellated images, add to view
     UIImageView * pixelView = [[UIImageView alloc] initWithFrame:self.cameraButton.frame];
     pixelView.animationImages = self.pixelatedImagesArray;
@@ -240,11 +248,13 @@ BOOL firstLaunch;
 
 
 - (void) setUpTimer {
-    [NSTimer scheduledTimerWithTimeInterval:10
-                                     target:self
-                                   selector:@selector(pixelateCameraButton)
-                                   userInfo:nil
-                                    repeats:YES];
+    
+        [NSTimer scheduledTimerWithTimeInterval:8
+                                         target:self
+                                       selector:@selector(pixelateCameraButton)
+                                       userInfo:nil
+                                        repeats:YES];
+
 }
 
 //- (void)rotateImageView {
@@ -320,6 +330,7 @@ BOOL firstLaunch;
 
 - (IBAction)albumAction:(id)sender {
     
+
     [self dismissViewControllerAnimated:NO completion:NULL];
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -346,25 +357,27 @@ BOOL firstLaunch;
     
     self.photoPicker = nil;
 
-    //assume that the image is loaded in landscape mode from disk
-    if (!_rotateCameraButton.selected) {
-        if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
-        {
-            originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
-                                                       scale: 1.0
-                                                 orientation: UIImageOrientationRight];
+    if (self.photoPicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        //assume that the image is loaded in landscape mode from disk
+        if (!_rotateCameraButton.selected) {
+            if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
+            {
+                originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
+                                                           scale: 1.0
+                                                     orientation: UIImageOrientationRight];
+            }
+        }
+        
+        else{
+            if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
+            {
+                originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
+                                                           scale: 1.0
+                                                     orientation: UIImageOrientationLeftMirrored];
+            }
         }
     }
-    
-    else{
-        if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
-        {
-            originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
-                                                       scale: 1.0
-                                                 orientation: UIImageOrientationLeftMirrored];
-        }
-    }
-    
+
 
     UIStoryboard *storyboard= [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PreviewViewController *pVC = [[PreviewViewController alloc]init];

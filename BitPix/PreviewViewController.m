@@ -46,9 +46,14 @@ typedef enum SocialButtonTags
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:YES];
-     
-     [_imageView setImage:_image];
+    [super viewWillAppear:NO];
+    
+    [_imageView setAlpha:0.0f];
+    [_imageView setImage:_image];
+
+    [self.pixelatedImageView setAlpha:0.0f];
+
+    self.pixelatedImagesArray = [@[] mutableCopy];
 
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
         if([UIScreen mainScreen].bounds.size.height == 568.0)
@@ -62,6 +67,8 @@ typedef enum SocialButtonTags
                              completion:^(BOOL finished){
                                  [UIView animateWithDuration:.0001 animations:^{
                                      self.imageView.transform = CGAffineTransformScale(translate, 1.333, 1.3333);
+                                     [self.imageView setAlpha:1.0f];
+
                                  }];
                              }];
         }
@@ -74,20 +81,18 @@ typedef enum SocialButtonTags
     self.cancelAnimationView.alpha = 0.0f;
     
     [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.25f];
-    
 
 }
 
 
 - (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:YES];
+    [super viewDidAppear:NO];
     
     self.twitterAnimationView.alpha = 1.0f;
     self.facebookAnimationView.alpha = 1.0f;
     self.checkmarkAnimationView.alpha = 1.0f;
     self.cancelAnimationView.alpha = 1.0f;
-    
-    self.pixelatedImagesArray = [@[] mutableCopy];
+        
 //    [self setupDisplayFiltering];
     
 }
@@ -103,6 +108,9 @@ typedef enum SocialButtonTags
 
 - (void)setupDisplayFiltering;
 {
+    
+    self.pixelatedImagesArray = [[NSMutableArray alloc]init];
+    
     CGRect originalRect = self.view.bounds;
     
     // screenshot of background image view
@@ -131,6 +139,7 @@ typedef enum SocialButtonTags
 
 
 - (void) showPixellatedImageView {
+
     
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
         if([UIScreen mainScreen].bounds.size.height == 568.0)
@@ -138,7 +147,7 @@ typedef enum SocialButtonTags
             CGAffineTransform translate = CGAffineTransformMakeTranslation(0, 0);
             self.pixelatedImageView.transform =  translate;
             
-            [UIView animateWithDuration:.0001 animations:^{
+            [UIView animateWithDuration:.00001 animations:^{
                 self.pixelatedImageView.transform =  translate;
             }
                              completion:^(BOOL finished){
@@ -148,7 +157,8 @@ typedef enum SocialButtonTags
                              }];
         }
     }
-
+    
+    
     // create a UIImageView from the array of pixellated images, add to view
     UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
     pixelView.animationImages = self.pixelatedImagesArray;
@@ -159,6 +169,8 @@ typedef enum SocialButtonTags
     
     
     self.pixelatedImageView = pixelView;
+    [self.pixelatedImageView setAlpha:1.0f];
+
     [self.view insertSubview:self.pixelatedImageView aboveSubview:self.imageView];
     
 }
@@ -238,6 +250,9 @@ typedef enum SocialButtonTags
 
 - (IBAction)cancel:(id)sender {
     
+    self.pixelatedImagesArray = nil;
+    NSLog(@"image array count = %u", self.pixelatedImagesArray.count);
+
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
