@@ -76,6 +76,9 @@ BOOL firstLaunch;
     [self.backgroundImage setAlpha:1.0];
     [self.logoLabel setAlpha:0.0];
     _logoLabel.font = [UIFont fontWithName:@"Extrude" size:90];
+    
+    self.pixelatedImagesArray = [NSMutableArray array];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -84,14 +87,15 @@ BOOL firstLaunch;
     
     _timer = nil;
     [_timer invalidate];
+    _pixelatedImageView = nil;
+    _pixelatedImagesArray = nil;
+    
 }
 
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    
-    self.pixelatedImagesArray = [NSMutableArray array];
     
     if (firstLaunch) {
         [self setupDisplayFiltering];
@@ -323,9 +327,9 @@ BOOL firstLaunch;
 
 
 
-- (IBAction)takePhoto:(id)sender {
+- (IBAction)takePhoto:(id)sender
+{
     [self.photoPicker takePicture];
-    
 }
 
 - (IBAction)albumAction:(id)sender {
@@ -355,9 +359,7 @@ BOOL firstLaunch;
 {
     originalImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
-    self.photoPicker = nil;
-
-    if (self.photoPicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         //assume that the image is loaded in landscape mode from disk
         if (!_rotateCameraButton.selected) {
             if ((originalImage.imageOrientation == UIImageOrientationUp) || (originalImage.imageOrientation == UIImageOrientationDown) ||  (originalImage.imageOrientation == UIImageOrientationLeft))
@@ -378,6 +380,7 @@ BOOL firstLaunch;
         }
     }
 
+    self.photoPicker = nil;
 
     UIStoryboard *storyboard= [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PreviewViewController *pVC = [[PreviewViewController alloc]init];
