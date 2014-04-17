@@ -18,9 +18,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h4R-YN-J9a" userLabel="cameraButton">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h4R-YN-J9a" userLabel="cameraButton">
                     <rect key="frame" x="110" y="468" width="100" height="100"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="zYe-OU-Bpy"/>
+                    </constraints>
                     <state key="normal" image="cameraTick.png">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -29,9 +32,13 @@
                         <action selector="takePhoto:" destination="-1" eventType="touchUpInside" id="w20-V3-3jB"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uu6-9d-Bu0" userLabel="rotateCameraButton">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uu6-9d-Bu0" userLabel="rotateCameraButton">
                     <rect key="frame" x="270" y="26" width="35" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="26" id="O9R-yr-XLW"/>
+                        <constraint firstAttribute="width" constant="35" id="ZgI-cJ-3BT"/>
+                    </constraints>
                     <state key="normal" image="camera rotate.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -39,9 +46,13 @@
                         <action selector="rotateCamera:" destination="-1" eventType="touchUpInside" id="mxp-ra-Num"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIp-by-22i">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIp-by-22i">
                     <rect key="frame" x="15" y="509" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="7gq-Ye-2zo"/>
+                        <constraint firstAttribute="width" constant="30" id="KK2-6S-E3h"/>
+                    </constraints>
                     <state key="normal" image="cameraRoll.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -50,6 +61,15 @@
                     </connections>
                 </button>
             </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="h4R-YN-J9a" secondAttribute="bottom" id="1PH-U3-CnS"/>
+                <constraint firstItem="h4R-YN-J9a" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Fxw-Md-VNg"/>
+                <constraint firstAttribute="bottom" secondItem="VIp-by-22i" secondAttribute="bottom" constant="29" id="TsW-Fh-7x6"/>
+                <constraint firstItem="h4R-YN-J9a" firstAttribute="leading" secondItem="VIp-by-22i" secondAttribute="trailing" constant="65" id="eEz-7Z-K68"/>
+                <constraint firstItem="VIp-by-22i" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="imH-RU-oeu"/>
+                <constraint firstItem="uu6-9d-Bu0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="26" id="sT5-Pr-lDK"/>
+                <constraint firstAttribute="trailing" secondItem="uu6-9d-Bu0" secondAttribute="trailing" constant="15" id="wNC-wF-9Ro"/>
+            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
