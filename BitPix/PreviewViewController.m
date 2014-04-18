@@ -48,52 +48,39 @@ typedef enum SocialButtonTags
 {
     [super viewWillAppear:NO];
     
-    [_imageView setAlpha:0.0f];
-    [_imageView setImage:_image];
-
-    [self.pixelatedImageView setAlpha:0.0f];
-
-    self.pixelatedImagesArray = [@[] mutableCopy];
-
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+        //iPhone 5 or 5s
         if([UIScreen mainScreen].bounds.size.height == 568.0)
         {
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(-105, -190);
-            self.imageView.transform =  translate;
-
-            [UIView animateWithDuration:.0001 animations:^{
-                self.imageView.transform =  translate;
-            }
-                             completion:^(BOOL finished){
-                                 [UIView animateWithDuration:.0001 animations:^{
-                                     self.imageView.transform = CGAffineTransformScale(translate, 1.333, 1.3333);
-                                     [self.imageView setAlpha:1.0f];
-
-                                 }];
-                             }];
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0, 0);
+            self.imageView.transform = translate;
+            self.imageView.alpha = 1.0f;
+        }
+        //iPhone 4 or 4s
+        else{
+            
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0, -20);
+            self.imageView.transform = translate;
+            self.imageView.alpha = 1.0f;
         }
     }
-    
-    
+
+    [_imageView setImage:_image];
+    [self.pixelatedImageView setAlpha:0.0f];
     self.facebookAnimationView.alpha = 0.0f;
     self.twitterAnimationView.alpha = 0.0f;
     self.checkmarkAnimationView.alpha = 0.0f;
     self.cancelAnimationView.alpha = 0.0f;
+    self.pixelatedImagesArray = [@[] mutableCopy];
     
-    [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.25f];
-
+    [self.pixelatedImageView setContentMode:UIViewContentModeScaleAspectFill];
+    
+    [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.10f];
 }
 
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:NO];
-    
-    self.twitterAnimationView.alpha = 1.0f;
-    self.facebookAnimationView.alpha = 1.0f;
-    self.checkmarkAnimationView.alpha = 1.0f;
-    self.cancelAnimationView.alpha = 1.0f;
-        
-//    [self setupDisplayFiltering];
     
 }
 
@@ -101,22 +88,36 @@ typedef enum SocialButtonTags
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    UISwipeGestureRecognizer *swipeUpGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissView)];
+    [swipeUpGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionDown];
+    [swipeUpGestureRecognizer setNumberOfTouchesRequired:1];
+    [self.view addGestureRecognizer:swipeUpGestureRecognizer];
+    
+    [_saveButton setImage:[UIImage imageNamed:@"download02.png"] forState:UIControlStateNormal];
+    [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateSelected];
+    [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateDisabled];
+
 }
 
+-(void)dismissView
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+}
 
 - (void)setupDisplayFiltering;
 {
-    
     self.pixelatedImagesArray = [[NSMutableArray alloc]init];
     
-    CGRect originalRect = self.view.bounds;
+    CGRect originalRect = self.imageView.bounds;
     
     // screenshot of background image view
     UIImage * capturedImage = nil;
     if ([[UIScreen mainScreen] scale] == 2.0) {
-        UIGraphicsBeginImageContextWithOptions(originalRect.size, NO, 1.33);
+        UIGraphicsBeginImageContextWithOptions(originalRect.size, NO, 1.0);
     } else {
         UIGraphicsBeginImageContext(originalRect.size);
     }
@@ -126,60 +127,86 @@ typedef enum SocialButtonTags
     capturedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+    
+//    NSString *filename = @"lookup_warming.png";
+//    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:capturedImage];
+//    
+//    GPUImagePicture *lookupImageSource = [[GPUImagePicture alloc] initWithImage:[UIImage imageNamed:filename]];
+//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
+//    [stillImageSource addTarget:lookupFilter];
+//    [lookupImageSource addTarget:lookupFilter];
+//    
+//    [stillImageSource processImage];
+//    [lookupImageSource processImage];
+////    [lookupFilter imageByFilteringImage:capturedImage];
+//    UIImage *filteredImage = [lookupFilter imageByFilteringImage:capturedImage];
+//    
+    
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
-    for (NSInteger index = 1; index < 40; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.00040;
-        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
+    for (NSInteger index = 1; index < 60; index++){
+        pixellateFilter.fractionalWidthOfAPixel = index*0.00026;
+        UIImage *filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
     
     [self showPixellatedImageView];
+
 }
 
 
 - (void) showPixellatedImageView {
-
-    
-    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
-        if([UIScreen mainScreen].bounds.size.height == 568.0)
-        {
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(0, 0);
-            self.pixelatedImageView.transform =  translate;
-            
-            [UIView animateWithDuration:.00001 animations:^{
-                self.pixelatedImageView.transform =  translate;
-            }
-                             completion:^(BOOL finished){
-                                 [UIView animateWithDuration:.0001 animations:^{
-                                     self.pixelatedImageView.transform = CGAffineTransformScale(translate, 1.333, 1.3333);
-                                 }];
-                             }];
-        }
-    }
-    
     
     // create a UIImageView from the array of pixellated images, add to view
-    UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.imageView.frame];
+    [pixelView setContentMode:UIViewContentModeScaleAspectFill];
     pixelView.animationImages = self.pixelatedImagesArray;
-    pixelView.animationDuration=0.50;
+    pixelView.animationDuration=0.900;
     pixelView.animationRepeatCount=1;
     pixelView.image = [self.pixelatedImagesArray lastObject];
     [pixelView startAnimating];
     
-    
     self.pixelatedImageView = pixelView;
-    [self.pixelatedImageView setAlpha:1.0f];
-
     [self.view insertSubview:self.pixelatedImageView aboveSubview:self.imageView];
     
+    [self performSelector:@selector(startCanvasAnimations) withObject:nil afterDelay:0.200];
 }
 
+
+-(void)startCanvasAnimations
+{
+    
+    self.facebookAnimationView.duration = 0.5;
+    self.facebookAnimationView.delay    = 0.25;
+    self.facebookAnimationView.type     = CSAnimationTypeBounceUp;
+    
+    self.twitterAnimationView.duration = 0.5;
+    self.twitterAnimationView.delay    = 0.45;
+    self.twitterAnimationView.type     = CSAnimationTypeBounceUp;
+    
+    self.checkmarkAnimationView.duration = 0.5;
+    self.checkmarkAnimationView.delay    = 0.55;
+    self.checkmarkAnimationView.type     = CSAnimationTypeBounceUp;
+    
+    self.cancelAnimationView.duration = 0.75;
+    self.cancelAnimationView.delay    = 0.30;
+    self.cancelAnimationView.type     = CSAnimationTypeBounceDown;
+    
+    [self.view startCanvasAnimation];
+    
+    self.twitterAnimationView.alpha = 1.0f;
+    self.facebookAnimationView.alpha = 1.0f;
+    self.checkmarkAnimationView.alpha = 1.0f;
+    self.cancelAnimationView.alpha = 1.0f;
+
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.pixelatedImagesArray = nil;
+
 }
 
 
@@ -190,7 +217,7 @@ typedef enum SocialButtonTags
         SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         
         [composeViewController addImage:self.pixelatedImageView.image];
-        NSString *initalTextString = [NSString stringWithFormat:@"I spent traveling miles."];
+        NSString *initalTextString = [NSString stringWithFormat:@"OMG, everything is pixelated! Check out this new app Bitpix and pixelate your life."];
         [composeViewController setInitialText:initalTextString];
         [self presentViewController:composeViewController animated:YES completion:nil];
 
@@ -206,7 +233,7 @@ typedef enum SocialButtonTags
         SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         
         [composeViewController addImage:self.pixelatedImageView.image];
-        NSString *initalTextString = [NSString stringWithFormat:@"I spent traveling miles."];
+        NSString *initalTextString = [NSString stringWithFormat:@"OMG, everything is pixelated! Check out this new app Bitpix and pixelate your life. @bitpixapp"];
         [composeViewController setInitialText:initalTextString];
         [self presentViewController:composeViewController animated:YES completion:nil];
         
@@ -245,7 +272,7 @@ typedef enum SocialButtonTags
 
 - (IBAction)savePicture:(id)sender {
     UIImageWriteToSavedPhotosAlbum(_pixelatedImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    [self dismissViewControllerAnimated:NO completion:nil];
+//    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)cancel:(id)sender {
@@ -265,15 +292,27 @@ typedef enum SocialButtonTags
     if(error)
     {
         alertTitle   = @"Error";
-        alertMessage = @"Unable to save to photo album.";
+        alertMessage = @"Oh no! We were unable to save your BitPix photo. Please try again.";
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
                                                         message:alertMessage
                                                        delegate:self
-                                              cancelButtonTitle:@"Okay"
+                                              cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil];
         [alert show];
 
+    }else
+    {
+        _saveButton.alpha =0.0f;
+        [_saveButton setSelected:YES];
+        _saveButton.userInteractionEnabled = NO;
+        
+        [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateDisabled];
+        [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateSelected];
+        [UIView animateWithDuration:0.300f animations:^{
+            _saveButton.alpha =1.0f;
+        }];
+        
     }
     
 }

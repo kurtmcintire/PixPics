@@ -60,9 +60,7 @@ BOOL firstLaunch;
     tapGesture.numberOfTouchesRequired = 1;
     [_photoPicker.view addGestureRecognizer:tapGesture];
     [self.photoPicker.view setUserInteractionEnabled:YES];
-    
-    [self.cameraButton setImage:[UIImage imageNamed:@"cameraTick.png"] forState:UIControlStateNormal];
-    
+        
     [self setUpTimer];
 
 }
@@ -78,6 +76,18 @@ BOOL firstLaunch;
     _logoLabel.font = [UIFont fontWithName:@"Extrude" size:90];
     
     self.pixelatedImagesArray = [NSMutableArray array];
+    
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+        //For iphone 4+
+        if([UIScreen mainScreen].bounds.size.height == 480.0)
+        {
+            [self.backgroundImage setImage:[UIImage imageNamed:@"launchImage_960.png"]];
+            
+        }else{
+            //For iphone 5
+            [self.backgroundImage setImage:[UIImage imageNamed:@"launchImage.png"]];
+        }
+    }
 
 }
 
@@ -253,12 +263,19 @@ BOOL firstLaunch;
 
 - (void) setUpTimer {
     
-        [NSTimer scheduledTimerWithTimeInterval:8
+        [NSTimer scheduledTimerWithTimeInterval:6
                                          target:self
                                        selector:@selector(pixelateCameraButton)
                                        userInfo:nil
                                         repeats:YES];
+}
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    self.pixelatedImagesArray = nil;
+    
 }
 
 //- (void)rotateImageView {
@@ -292,23 +309,31 @@ BOOL firstLaunch;
     {
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-        imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+        imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
         imagePickerController.showsCameraControls = NO;
         imagePickerController.navigationBarHidden = YES;
         imagePickerController.toolbarHidden = YES;
         
-        //For iphone 5+
-        //Camera is 426 * 320. Screen height is 568.  Multiply by 1.333 in 5 inch to fill vertical
         
         if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+            //For iphone 5+
+            //Camera is 426 * 320. Screen height is 568.  Multiply by 1.333 in 5 inch to fill vertical
             if([UIScreen mainScreen].bounds.size.height == 568.0)
             {
                 CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
                 
-                //This slots the preview exactly in the middle of the screen by moving it down 71 points
                 imagePickerController.cameraViewTransform = translate;
                 
                 CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
+                imagePickerController.cameraViewTransform = scale;
+            }else{
+                //For iphone 4+
+                //Camera is 426 * 320. Screen height is 480.  Multiply by 1.1267 in 5 inch to fill vertical
+                CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 30.0);
+                
+                imagePickerController.cameraViewTransform = translate;
+                
+                CGAffineTransform scale = CGAffineTransformScale(translate, 1.18, 1.18);
                 imagePickerController.cameraViewTransform = scale;
             }
         }
