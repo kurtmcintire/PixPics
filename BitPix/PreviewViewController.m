@@ -7,6 +7,7 @@
 //
 
 #import "PreviewViewController.h"
+#import <GPUImageOutput.h>
 
 typedef enum SocialButtonTags
 {
@@ -75,7 +76,7 @@ typedef enum SocialButtonTags
     
     [self.pixelatedImageView setContentMode:UIViewContentModeScaleAspectFill];
     
-    [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.10f];
+    [self performSelector:@selector(setupDisplayFiltering) withObject:nil afterDelay:0.05f];
 }
 
 
@@ -145,12 +146,12 @@ typedef enum SocialButtonTags
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
     for (NSInteger index = 1; index < 60; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.00026;
+        pixellateFilter.fractionalWidthOfAPixel = index*0.00028;
         UIImage *filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
     
-    [self showPixellatedImageView];
+    [self performSelector:@selector(showPixellatedImageView) withObject:nil afterDelay:0.05f];
 
 }
 
@@ -161,7 +162,7 @@ typedef enum SocialButtonTags
     UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.imageView.frame];
     [pixelView setContentMode:UIViewContentModeScaleAspectFill];
     pixelView.animationImages = self.pixelatedImagesArray;
-    pixelView.animationDuration=0.900;
+    pixelView.animationDuration=0.700;
     pixelView.animationRepeatCount=1;
     pixelView.image = [self.pixelatedImagesArray lastObject];
     [pixelView startAnimating];
@@ -173,23 +174,69 @@ typedef enum SocialButtonTags
 }
 
 
+//- (void) lookupWarming {
+//    UIImage *filteredimage;
+//    NSString *filename = @"lookup_warming.png";
+//    
+//    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:self.imageView.image];
+//    
+//    GPUImagePicture *lookupImageSource = [[GPUImagePicture alloc] initWithImage:[UIImage imageNamed:filename]];
+//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
+//    [stillImageSource addTarget:lookupFilter];
+//    [lookupImageSource addTarget:lookupFilter];
+//    
+//    [stillImageSource processImage];
+//    [lookupImageSource processImage];
+//    [lookupFilter ];
+//    filteredimage = [lookupFilter imageFromCurrentlyProcessedOutput];
+//    
+//    NSDictionary *filteredDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:filteredimage, @"filteredImage", filename, @"filename", nil];
+//    
+//    [filterNames insertObject:filteredDictionary atIndex:0];
+//    
+//    [self lookupFilter2];
+//}
+//
+//- (void) lookupFilter2 {
+//    UIImage *filteredimage;
+//    NSString *filename = @"lookup_filter2.png";
+//    
+//    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:self.imageView.image];
+//    
+//    GPUImagePicture *lookupImageSource = [[GPUImagePicture alloc] initWithImage:[UIImage imageNamed:filename]];
+//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
+//    [stillImageSource addTarget:lookupFilter];
+//    [lookupImageSource addTarget:lookupFilter];
+//    
+//    [stillImageSource processImage];
+//    [lookupImageSource processImage];
+//    [lookupFilter imageFromCurrentlyProcessedOutput];
+//    filteredimage = [lookupFilter imageFromCurrentlyProcessedOutput];
+//    
+//    NSDictionary *filteredDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:filteredimage, @"filteredImage", filename, @"filename", nil];
+//    
+//    [filterNames insertObject:filteredDictionary atIndex:0];
+//    
+//}
+
+
 -(void)startCanvasAnimations
 {
     
     self.facebookAnimationView.duration = 0.5;
-    self.facebookAnimationView.delay    = 0.25;
+    self.facebookAnimationView.delay    = 0.35;
     self.facebookAnimationView.type     = CSAnimationTypeBounceUp;
     
-    self.twitterAnimationView.duration = 0.5;
-    self.twitterAnimationView.delay    = 0.45;
+    self.twitterAnimationView.duration = 0.40;
+    self.twitterAnimationView.delay    = 0.55;
     self.twitterAnimationView.type     = CSAnimationTypeBounceUp;
     
-    self.checkmarkAnimationView.duration = 0.5;
-    self.checkmarkAnimationView.delay    = 0.55;
+    self.checkmarkAnimationView.duration = 0.35;
+    self.checkmarkAnimationView.delay    = 0.65;
     self.checkmarkAnimationView.type     = CSAnimationTypeBounceUp;
     
-    self.cancelAnimationView.duration = 0.75;
-    self.cancelAnimationView.delay    = 0.30;
+    self.cancelAnimationView.duration = 0.55;
+    self.cancelAnimationView.delay    = 0.20;
     self.cancelAnimationView.type     = CSAnimationTypeBounceDown;
     
     [self.view startCanvasAnimation];
@@ -296,7 +343,7 @@ typedef enum SocialButtonTags
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
                                                         message:alertMessage
-                                                       delegate:self
+                                                       delegate:nil
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil];
         [alert show];
@@ -314,11 +361,6 @@ typedef enum SocialButtonTags
         }];
         
     }
-    
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
     
 }
 

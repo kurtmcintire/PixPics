@@ -10,6 +10,8 @@
 #import <Canvas/CSAnimationView.h>
 
 BOOL firstLaunch;
+BOOL firstCameraLaunch;
+
 
 @interface CameraViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIGestureRecognizerDelegate>
 {
@@ -52,7 +54,8 @@ BOOL firstLaunch;
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     firstLaunch = YES;
-    
+    firstCameraLaunch = YES;
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(takePicture)];
     tapGesture.delegate = self;
@@ -61,8 +64,6 @@ BOOL firstLaunch;
     [_photoPicker.view addGestureRecognizer:tapGesture];
     [self.photoPicker.view setUserInteractionEnabled:YES];
         
-    [self setUpTimer];
-
 }
 
 
@@ -95,11 +96,10 @@ BOOL firstLaunch;
 {
     [super viewWillDisappear:YES];
     
-    _timer = nil;
     [_timer invalidate];
-    _pixelatedImageView = nil;
-    _pixelatedImagesArray = nil;
+    _timer = nil;
     
+    self.pixelatedImagesArray = nil;
 }
 
 
@@ -110,10 +110,12 @@ BOOL firstLaunch;
     if (firstLaunch) {
         [self setupDisplayFiltering];
         firstLaunch = NO;
-        
     }else
     {
-        [self showPicker];
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
+            [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.05];
+        }
     }
 }
 
@@ -124,10 +126,16 @@ BOOL firstLaunch;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypeCamera];
-
-    }else
+        if (firstCameraLaunch) {
+            [self setUpTimer];
+            firstCameraLaunch = NO;
+        }
+    }
+    else
     {
         [self showImagePickerForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [_timer invalidate];
+        _timer = nil;
     }
     
 }
@@ -149,20 +157,6 @@ BOOL firstLaunch;
     
     [self performSelector:@selector(pixelateOutDisplay:) withObject:capturedImage afterDelay:0.5f];
 }
-
-//- (void)pixelateInDisplay:(UIImage *)image
-//{
-//    // build an array of images at different filter levels
-//    GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
-//    for (NSInteger index = 1; index < 50; index++){
-//        pixellateFilter.fractionalWidthOfAPixel = (50-index)*0.0009;
-//        UIImage * filteredImage = [pixellateFilter imageByFilteringImage:image];
-//        [self.pixelatedImagesArray addObject:filteredImage];
-//    }
-//    
-//    [self showPixellatedImageView];
-//    [self performSelector:@selector(pixelateOutDisplay:) withObject:image afterDelay:1.25f];
-//}
 
 -(void)pixelateOutDisplay:(UIImage *)image
 {
@@ -198,7 +192,6 @@ BOOL firstLaunch;
                          [self.logoLabel setAlpha:0.0];
                          }completion:^(BOOL finished){
                              [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.05];
-
                          }];
             }];
     }];
@@ -230,7 +223,7 @@ BOOL firstLaunch;
         // build an array of images at different filter levels
         GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
         for (NSInteger index = 1; index < 60; index++){
-            pixellateFilter.fractionalWidthOfAPixel = (60-index)*0.0009;
+            pixellateFilter.fractionalWidthOfAPixel = (60-index)*0.001;
             
             
             UIImage * filteredImage = [pixellateFilter imageByFilteringImage:self.cameraButton.imageView.image];
@@ -256,7 +249,6 @@ BOOL firstLaunch;
     
     self.pixelatedImageView = pixelView;
     [self.view insertSubview:self.pixelatedImageView aboveSubview:self.view];
-    
 }
 
 
@@ -278,18 +270,6 @@ BOOL firstLaunch;
     
 }
 
-//- (void)rotateImageView {
-//    CABasicAnimation *rotate =
-//    [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-//    rotate.byValue = @(M_PI*2); // Change to - angle for counter clockwise rotation
-//    rotate.duration = 3.0f;
-//    rotate.repeatCount = HUGE_VALF;
-//    
-//    [_cameraButton.layer addAnimation:rotate
-//                               forKey:@"myRotationAnimation"];
-//}
-
-
 - (void)showImagePickerForSourceType:(UIImagePickerControllerSourceType)sourceType
 {
 
@@ -299,14 +279,11 @@ BOOL firstLaunch;
     imagePickerController.delegate = self;
     
 
-    [[NSBundle mainBundle] loadNibNamed:@"Overlay" owner:self options:nil];
-    self.overlayView.frame = imagePickerController.cameraOverlayView.frame;
-    imagePickerController.cameraOverlayView = self.overlayView;
-    self.overlayView = nil;
-    
+
     NSLog(@"%@", @"Taking a picture...");
     if (sourceType == UIImagePickerControllerSourceTypeCamera)
     {
+        
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
@@ -314,6 +291,10 @@ BOOL firstLaunch;
         imagePickerController.navigationBarHidden = YES;
         imagePickerController.toolbarHidden = YES;
         
+        [[NSBundle mainBundle] loadNibNamed:@"Overlay" owner:self options:nil];
+        self.overlayView.frame = imagePickerController.cameraOverlayView.frame;
+        imagePickerController.cameraOverlayView = self.overlayView;
+        self.overlayView = nil;
         
         if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
             //For iphone 5+
@@ -341,8 +322,6 @@ BOOL firstLaunch;
     }else{
         imagePickerController.delegate = self;
         imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePickerController.allowsEditing = YES;
-                
     }
 
     self.photoPicker = imagePickerController;
@@ -391,7 +370,7 @@ BOOL firstLaunch;
             {
                 originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
                                                            scale: 1.0
-                                                     orientation: UIImageOrientationRight];
+                                                     orientation: UIImageOrientationLeftMirrored];
             }
         }
         
@@ -400,7 +379,7 @@ BOOL firstLaunch;
             {
                 originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
                                                            scale: 1.0
-                                                     orientation: UIImageOrientationLeftMirrored];
+                                                     orientation: UIImageOrientationRight];
             }
         }
     }
@@ -422,6 +401,7 @@ BOOL firstLaunch;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [self dismissViewControllerAnimated:NO completion:NULL];
+    [self setupDisplayFiltering];
 }
 
 

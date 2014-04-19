@@ -101,6 +101,7 @@
 		BFC1D62B18FAD96E00C465C8 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		BFC1D63318FAD99700C465C8 /* MinneapolisBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MinneapolisBackground.png; sourceTree = "<group>"; };
 		D7230BAC18F8EE7F001E2425 /* camera rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera rotate.png"; sourceTree = "<group>"; };
+		D735646F1902E4F000F937AF /* libPods-GPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-GPUImage.a"; path = "Pods/build/Release-iphoneos/libPods-GPUImage.a"; sourceTree = "<group>"; };
 		D752F13B1901CDCE00776752 /* lookup_warming.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup_warming.png; sourceTree = "<group>"; };
 		D75A730F1901A63700E2DF58 /* camera02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera02.png; sourceTree = "<group>"; };
 		D75A73101901A63700E2DF58 /* camera03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera03.png; sourceTree = "<group>"; };
@@ -180,6 +181,7 @@
 		BF15775418F2F2C60089C782 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D735646F1902E4F000F937AF /* libPods-GPUImage.a */,
 				BF8771AB18F88F9900CCE75F /* Social.framework */,
 				D7F1245018F331F60073B256 /* QuartzCore.framework */,
 				D7F1244E18F331EB0073B256 /* AVFoundation.framework */,
@@ -528,6 +530,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-fno-objc-arc";
 				PROVISIONING_PROFILE = "58925C0F-5FA3-4095-AA7C-C77321555394";
 				SDKROOT = iphoneos;
 			};
@@ -568,6 +571,7 @@
 					"./GPUITest3/BradLarson-GPUImage-f67cbd9/framework/Source",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-fno-objc-arc";
 				PROVISIONING_PROFILE = "58925C0F-5FA3-4095-AA7C-C77321555394";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -590,6 +594,10 @@
 					GPUImage/Source/frameworksource/iOS,
 				);
 				INFOPLIST_FILE = "BitPix/BitPix-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Release-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -611,6 +619,10 @@
 					GPUImage/Source/frameworksource/iOS,
 				);
 				INFOPLIST_FILE = "BitPix/BitPix-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/build/Release-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
