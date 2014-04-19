@@ -80,7 +80,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wse-Bf-60i">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wse-Bf-60i">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
@@ -166,8 +166,12 @@
                         <constraints>
                             <constraint firstItem="ePj-ff-1Ar" firstAttribute="top" secondItem="0jP-a8-FsG" secondAttribute="bottom" constant="9" id="Nvq-di-iXO"/>
                             <constraint firstItem="ePj-ff-1Ar" firstAttribute="top" secondItem="PqI-8W-WLQ" secondAttribute="bottom" constant="9" id="W8y-27-k5Z"/>
+                            <constraint firstItem="Wse-Bf-60i" firstAttribute="leading" secondItem="Qxa-Qw-8Gx" secondAttribute="leading" id="Yv9-E5-B5b"/>
+                            <constraint firstItem="ePj-ff-1Ar" firstAttribute="top" secondItem="Wse-Bf-60i" secondAttribute="bottom" id="Yww-LO-gck"/>
                             <constraint firstAttribute="trailing" secondItem="aZx-47-zv9" secondAttribute="trailing" constant="20" id="bWI-v4-R5k"/>
+                            <constraint firstItem="Wse-Bf-60i" firstAttribute="top" secondItem="Qxa-Qw-8Gx" secondAttribute="top" id="pKT-9j-Vf1"/>
                             <constraint firstItem="0jP-a8-FsG" firstAttribute="leading" secondItem="Qxa-Qw-8Gx" secondAttribute="leading" constant="9" id="sjU-c2-xma"/>
+                            <constraint firstAttribute="trailing" secondItem="Wse-Bf-60i" secondAttribute="trailing" id="xM6-2V-Mlb"/>
                             <constraint firstItem="PqI-8W-WLQ" firstAttribute="leading" secondItem="0jP-a8-FsG" secondAttribute="trailing" constant="8" id="xgf-pZ-r9y"/>
                             <constraint firstItem="ePj-ff-1Ar" firstAttribute="top" secondItem="aZx-47-zv9" secondAttribute="bottom" constant="9" id="yL4-Fe-Hcg"/>
                         </constraints>

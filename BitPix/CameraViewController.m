@@ -31,7 +31,6 @@ BOOL firstCameraLaunch;
 
 
 
-
 - (IBAction)takePhoto:(id)sender;
 - (IBAction)albumAction:(id)sender;
 - (IBAction)rotateCamera:(id)sender;
@@ -74,7 +73,7 @@ BOOL firstCameraLaunch;
     [_logoLabel setHidden:YES];
     [self.backgroundImage setAlpha:1.0];
     [self.logoLabel setAlpha:0.0];
-    _logoLabel.font = [UIFont fontWithName:@"Extrude" size:90];
+    _logoLabel.font = [UIFont fontWithName:@"Extrude" size:100];
     
     self.pixelatedImagesArray = [NSMutableArray array];
     
@@ -115,6 +114,9 @@ BOOL firstCameraLaunch;
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
             [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.05];
+        }else
+        {
+            [self setupDisplayFiltering];
         }
     }
 }
@@ -188,7 +190,7 @@ BOOL firstCameraLaunch;
                  self.pixelatedImagesArray = nil;
                  self.pixelatedImageView = nil;
             }completion:^(BOOL finished){
-                         [UIView animateWithDuration:0.20f animations:^{
+                         [UIView animateWithDuration:0.300f animations:^{
                          [self.logoLabel setAlpha:0.0];
                          }completion:^(BOOL finished){
                              [self performSelector:@selector(showPicker) withObject:nil afterDelay:0.05];
@@ -286,7 +288,7 @@ BOOL firstCameraLaunch;
         
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-        imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         imagePickerController.showsCameraControls = NO;
         imagePickerController.navigationBarHidden = YES;
         imagePickerController.toolbarHidden = YES;
@@ -370,7 +372,7 @@ BOOL firstCameraLaunch;
             {
                 originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
                                                            scale: 1.0
-                                                     orientation: UIImageOrientationLeftMirrored];
+                                                     orientation: UIImageOrientationRight];
             }
         }
         
@@ -379,7 +381,7 @@ BOOL firstCameraLaunch;
             {
                 originalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
                                                            scale: 1.0
-                                                     orientation: UIImageOrientationRight];
+                                                     orientation: UIImageOrientationLeftMirrored];
             }
         }
     }
@@ -401,9 +403,6 @@ BOOL firstCameraLaunch;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [self dismissViewControllerAnimated:NO completion:NULL];
-    [self setupDisplayFiltering];
 }
-
-
 
 @end

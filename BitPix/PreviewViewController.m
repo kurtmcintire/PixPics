@@ -29,6 +29,7 @@ typedef enum SocialButtonTags
 
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
 @property (nonatomic, strong) UIImageView *pixelatedImageView;
+@property (nonatomic, strong) UIImageView *initialImageView;
 
 
 @end
@@ -49,24 +50,34 @@ typedef enum SocialButtonTags
 {
     [super viewWillAppear:NO];
     
+    
+    self.initialImageView = [[UIImageView alloc] initWithFrame:self.imageView.frame];
+    [self.initialImageView setContentMode:UIViewContentModeScaleAspectFit];
+
+
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
         //iPhone 5 or 5s
         if([UIScreen mainScreen].bounds.size.height == 568.0)
         {
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(0, 0);
-            self.imageView.transform = translate;
-            self.imageView.alpha = 1.0f;
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 0.0);
+            self.initialImageView.transform = translate;
+            CGAffineTransform scale = CGAffineTransformScale(translate, 1.333, 1.333);
+            self.initialImageView.transform = scale;
         }
         //iPhone 4 or 4s
         else{
             
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(0, -20);
-            self.imageView.transform = translate;
-            self.imageView.alpha = 1.0f;
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 0.0);
+            self.initialImageView.transform = translate;
+            CGAffineTransform scale = CGAffineTransformScale(translate, 1.18, 1.18);
+            self.initialImageView.transform = scale;
         }
     }
+    
+    self.initialImageView.alpha = 1.0f;
+    [self.initialImageView setImage:_image];
+    [self.view insertSubview:self.initialImageView aboveSubview:self.imageView];
 
-    [_imageView setImage:_image];
     [self.pixelatedImageView setAlpha:0.0f];
     self.facebookAnimationView.alpha = 0.0f;
     self.twitterAnimationView.alpha = 0.0f;
@@ -100,7 +111,6 @@ typedef enum SocialButtonTags
     [_saveButton setImage:[UIImage imageNamed:@"download02.png"] forState:UIControlStateNormal];
     [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateSelected];
     [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateDisabled];
-
 }
 
 -(void)dismissView
@@ -113,7 +123,7 @@ typedef enum SocialButtonTags
 {
     self.pixelatedImagesArray = [[NSMutableArray alloc]init];
     
-    CGRect originalRect = self.imageView.bounds;
+    CGRect originalRect = self.initialImageView.bounds;
     
     // screenshot of background image view
     UIImage * capturedImage = nil;
@@ -124,34 +134,19 @@ typedef enum SocialButtonTags
     }
     CGContextRef cgContext = UIGraphicsGetCurrentContext();
     CGContextSetInterpolationQuality(cgContext, kCGInterpolationDefault);
-    [[self.imageView layer] renderInContext:cgContext];
+    [[self.initialImageView layer] renderInContext:cgContext];
     capturedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    
-//    NSString *filename = @"lookup_warming.png";
-//    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:capturedImage];
-//    
-//    GPUImagePicture *lookupImageSource = [[GPUImagePicture alloc] initWithImage:[UIImage imageNamed:filename]];
-//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
-//    [stillImageSource addTarget:lookupFilter];
-//    [lookupImageSource addTarget:lookupFilter];
-//    
-//    [stillImageSource processImage];
-//    [lookupImageSource processImage];
-////    [lookupFilter imageByFilteringImage:capturedImage];
-//    UIImage *filteredImage = [lookupFilter imageByFilteringImage:capturedImage];
-//    
     
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
     for (NSInteger index = 1; index < 60; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.00028;
+        pixellateFilter.fractionalWidthOfAPixel = index*0.00021;
         UIImage *filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
     
-    [self performSelector:@selector(showPixellatedImageView) withObject:nil afterDelay:0.05f];
+    [self performSelector:@selector(showPixellatedImageView) withObject:nil afterDelay:0.005f];
 
 }
 
@@ -159,16 +154,22 @@ typedef enum SocialButtonTags
 - (void) showPixellatedImageView {
     
     // create a UIImageView from the array of pixellated images, add to view
-    UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.imageView.frame];
-    [pixelView setContentMode:UIViewContentModeScaleAspectFill];
+    UIImageView *pixelView = [[UIImageView alloc] initWithFrame:self.initialImageView.frame];
+    [pixelView setContentMode:UIViewContentModeScaleAspectFit];
     pixelView.animationImages = self.pixelatedImagesArray;
     pixelView.animationDuration=0.700;
     pixelView.animationRepeatCount=1;
     pixelView.image = [self.pixelatedImagesArray lastObject];
+    
+//    CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 0.0);
+//    pixelView.transform = translate;
+//    CGAffineTransform scale = CGAffineTransformScale(translate, 1.33, 1.33);
+//    pixelView.transform = scale;
+    pixelView.alpha = 1.0f;
     [pixelView startAnimating];
     
     self.pixelatedImageView = pixelView;
-    [self.view insertSubview:self.pixelatedImageView aboveSubview:self.imageView];
+    [self.view insertSubview:self.pixelatedImageView aboveSubview:self.initialImageView];
     
     [self performSelector:@selector(startCanvasAnimations) withObject:nil afterDelay:0.200];
 }
@@ -223,20 +224,20 @@ typedef enum SocialButtonTags
 -(void)startCanvasAnimations
 {
     
-    self.facebookAnimationView.duration = 0.5;
-    self.facebookAnimationView.delay    = 0.35;
+    self.facebookAnimationView.duration = 0.50;
+    self.facebookAnimationView.delay    = 0.30;
     self.facebookAnimationView.type     = CSAnimationTypeBounceUp;
     
-    self.twitterAnimationView.duration = 0.40;
-    self.twitterAnimationView.delay    = 0.55;
+    self.twitterAnimationView.duration = 0.45;
+    self.twitterAnimationView.delay    = 0.50;
     self.twitterAnimationView.type     = CSAnimationTypeBounceUp;
     
-    self.checkmarkAnimationView.duration = 0.35;
+    self.checkmarkAnimationView.duration = 0.50;
     self.checkmarkAnimationView.delay    = 0.65;
     self.checkmarkAnimationView.type     = CSAnimationTypeBounceUp;
     
-    self.cancelAnimationView.duration = 0.55;
-    self.cancelAnimationView.delay    = 0.20;
+    self.cancelAnimationView.duration = 0.60;
+    self.cancelAnimationView.delay    = 0.10;
     self.cancelAnimationView.type     = CSAnimationTypeBounceDown;
     
     [self.view startCanvasAnimation];
