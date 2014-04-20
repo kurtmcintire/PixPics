@@ -50,8 +50,9 @@ typedef enum SocialButtonTags
 {
     [super viewWillAppear:NO];
     
+    self.pixelatedImagesArray = [NSMutableArray array];
     
-    self.initialImageView = [[UIImageView alloc] initWithFrame:self.imageView.frame];
+    self.initialImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     [self.initialImageView setContentMode:UIViewContentModeScaleAspectFit];
 
 
@@ -67,23 +68,23 @@ typedef enum SocialButtonTags
         //iPhone 4 or 4s
         else{
             
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 0.0);
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 30.0);
             self.initialImageView.transform = translate;
-            CGAffineTransform scale = CGAffineTransformScale(translate, 1.18, 1.18);
+            CGAffineTransform scale = CGAffineTransformScale(translate, 1.33, 1.33);
             self.initialImageView.transform = scale;
         }
     }
     
     self.initialImageView.alpha = 1.0f;
     [self.initialImageView setImage:_image];
-    [self.view insertSubview:self.initialImageView aboveSubview:self.imageView];
+    [self.view addSubview:self.initialImageView];
+    [self.view sendSubviewToBack:self.initialImageView];
 
     [self.pixelatedImageView setAlpha:0.0f];
     self.facebookAnimationView.alpha = 0.0f;
     self.twitterAnimationView.alpha = 0.0f;
     self.checkmarkAnimationView.alpha = 0.0f;
     self.cancelAnimationView.alpha = 0.0f;
-    self.pixelatedImagesArray = [@[] mutableCopy];
     
     [self.pixelatedImageView setContentMode:UIViewContentModeScaleAspectFill];
     
@@ -116,7 +117,7 @@ typedef enum SocialButtonTags
 -(void)dismissView
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-
+    self.pixelatedImagesArray = nil;
 }
 
 - (void)setupDisplayFiltering;
@@ -124,27 +125,38 @@ typedef enum SocialButtonTags
     self.pixelatedImagesArray = [[NSMutableArray alloc]init];
     
     CGRect originalRect = self.initialImageView.bounds;
-    
     // screenshot of background image view
     UIImage * capturedImage = nil;
     if ([[UIScreen mainScreen] scale] == 2.0) {
-        UIGraphicsBeginImageContextWithOptions(originalRect.size, NO, 1.0);
+        UIGraphicsBeginImageContextWithOptions(originalRect.size, NO, 0.0);
     } else {
         UIGraphicsBeginImageContext(originalRect.size);
     }
     CGContextRef cgContext = UIGraphicsGetCurrentContext();
-    CGContextSetInterpolationQuality(cgContext, kCGInterpolationDefault);
+    CGContextSetInterpolationQuality(cgContext, kCGInterpolationHigh);
     [[self.initialImageView layer] renderInContext:cgContext];
     capturedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+//    CIImage *ciImage = [[CIImage alloc] initWithImage:capturedImage];
+//    CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectChrome"
+//                                  keysAndValues:kCIInputImageKey, ciImage, nil];
+//    [filter setDefaults];
+//    CIContext *context = [CIContext contextWithOptions:nil];
+//    CIImage *outputImage = [filter outputImage];
+//    CGImageRef cgImage = [context createCGImage:outputImage
+//                                       fromRect:[outputImage extent]];
+//    capturedImage = [UIImage imageWithCGImage:cgImage];
+//    CGImageRelease(cgImage);
+    
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
     for (NSInteger index = 1; index < 60; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.00021;
+        pixellateFilter.fractionalWidthOfAPixel = index*0.00019;
         UIImage *filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
+    
     
     [self performSelector:@selector(showPixellatedImageView) withObject:nil afterDelay:0.005f];
 
@@ -160,11 +172,6 @@ typedef enum SocialButtonTags
     pixelView.animationDuration=0.700;
     pixelView.animationRepeatCount=1;
     pixelView.image = [self.pixelatedImagesArray lastObject];
-    
-//    CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 0.0);
-//    pixelView.transform = translate;
-//    CGAffineTransform scale = CGAffineTransformScale(translate, 1.33, 1.33);
-//    pixelView.transform = scale;
     pixelView.alpha = 1.0f;
     [pixelView startAnimating];
     
@@ -173,52 +180,6 @@ typedef enum SocialButtonTags
     
     [self performSelector:@selector(startCanvasAnimations) withObject:nil afterDelay:0.200];
 }
-
-
-//- (void) lookupWarming {
-//    UIImage *filteredimage;
-//    NSString *filename = @"lookup_warming.png";
-//    
-//    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:self.imageView.image];
-//    
-//    GPUImagePicture *lookupImageSource = [[GPUImagePicture alloc] initWithImage:[UIImage imageNamed:filename]];
-//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
-//    [stillImageSource addTarget:lookupFilter];
-//    [lookupImageSource addTarget:lookupFilter];
-//    
-//    [stillImageSource processImage];
-//    [lookupImageSource processImage];
-//    [lookupFilter ];
-//    filteredimage = [lookupFilter imageFromCurrentlyProcessedOutput];
-//    
-//    NSDictionary *filteredDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:filteredimage, @"filteredImage", filename, @"filename", nil];
-//    
-//    [filterNames insertObject:filteredDictionary atIndex:0];
-//    
-//    [self lookupFilter2];
-//}
-//
-//- (void) lookupFilter2 {
-//    UIImage *filteredimage;
-//    NSString *filename = @"lookup_filter2.png";
-//    
-//    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:self.imageView.image];
-//    
-//    GPUImagePicture *lookupImageSource = [[GPUImagePicture alloc] initWithImage:[UIImage imageNamed:filename]];
-//    GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
-//    [stillImageSource addTarget:lookupFilter];
-//    [lookupImageSource addTarget:lookupFilter];
-//    
-//    [stillImageSource processImage];
-//    [lookupImageSource processImage];
-//    [lookupFilter imageFromCurrentlyProcessedOutput];
-//    filteredimage = [lookupFilter imageFromCurrentlyProcessedOutput];
-//    
-//    NSDictionary *filteredDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:filteredimage, @"filteredImage", filename, @"filename", nil];
-//    
-//    [filterNames insertObject:filteredDictionary atIndex:0];
-//    
-//}
 
 
 -(void)startCanvasAnimations
@@ -253,7 +214,7 @@ typedef enum SocialButtonTags
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    self.pixelatedImagesArray = nil;
+//    self.pixelatedImagesArray = nil;
 
 }
 
@@ -320,14 +281,12 @@ typedef enum SocialButtonTags
 
 - (IBAction)savePicture:(id)sender {
     UIImageWriteToSavedPhotosAlbum(_pixelatedImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-//    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)cancel:(id)sender {
     
     self.pixelatedImagesArray = nil;
     NSLog(@"image array count = %u", self.pixelatedImagesArray.count);
-
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 

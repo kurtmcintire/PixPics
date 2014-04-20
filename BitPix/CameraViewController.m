@@ -94,11 +94,8 @@ BOOL firstCameraLaunch;
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
-    
     [_timer invalidate];
     _timer = nil;
-    
-    self.pixelatedImagesArray = nil;
 }
 
 
@@ -188,7 +185,6 @@ BOOL firstCameraLaunch;
              [UIView animateWithDuration:0.50f delay:1.25f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                  [self.pixelatedImageView setAlpha:0];
                  self.pixelatedImagesArray = nil;
-                 self.pixelatedImageView = nil;
             }completion:^(BOOL finished){
                          [UIView animateWithDuration:0.300f animations:^{
                          [self.logoLabel setAlpha:0.0];

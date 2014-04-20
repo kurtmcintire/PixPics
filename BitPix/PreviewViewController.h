@@ -18,7 +18,6 @@
 
 
 @property (nonatomic, strong) UIImage *image;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 - (IBAction)facebookShare:(id)sender;
 - (IBAction)twitterShare:(id)sender;
