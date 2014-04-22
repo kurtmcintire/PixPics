@@ -21,13 +21,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fzx-MD-m87" customClass="CSAnimationView">
-                                <rect key="frame" x="10" y="190" width="310" height="120"/>
+                                <rect key="frame" x="5" y="190" width="315" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BITPIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jko-Yd-VyF">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PIXPICS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jko-Yd-VyF">
                                         <rect key="frame" x="0.0" y="11" width="310" height="97"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="120"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -35,7 +35,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="RMy-qa-H2e"/>
-                                    <constraint firstAttribute="width" constant="310" id="ZK7-vb-GQ4"/>
+                                    <constraint firstAttribute="width" constant="315" id="ZK7-vb-GQ4"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="duration">
@@ -53,14 +53,14 @@
                             <constraint firstAttribute="centerY" secondItem="Fzx-MD-m87" secondAttribute="centerY" constant="34" id="3vF-8p-J0s"/>
                             <constraint firstItem="YaC-1i-wZ4" firstAttribute="leading" secondItem="oci-cH-3BS" secondAttribute="leading" id="9pa-e1-gQf"/>
                             <constraint firstItem="LqY-8y-3Yv" firstAttribute="top" secondItem="YaC-1i-wZ4" secondAttribute="bottom" id="Go7-0o-YK8"/>
-                            <constraint firstAttribute="centerX" secondItem="Fzx-MD-m87" secondAttribute="centerX" constant="-5" id="GoE-0A-sda"/>
+                            <constraint firstAttribute="centerX" secondItem="Fzx-MD-m87" secondAttribute="centerX" constant="-2.5" id="GoE-0A-sda"/>
                             <constraint firstItem="YaC-1i-wZ4" firstAttribute="top" secondItem="oci-cH-3BS" secondAttribute="top" id="Qpa-vh-H9y"/>
                             <constraint firstAttribute="trailing" secondItem="YaC-1i-wZ4" secondAttribute="trailing" id="ZbM-td-scW"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="PixPicsView" destination="Fzx-MD-m87" id="sdJ-lA-SFC"/>
                         <outlet property="backgroundImage" destination="YaC-1i-wZ4" id="jlu-Qr-v7x"/>
-                        <outlet property="bitPixView" destination="Fzx-MD-m87" id="vgg-uP-3nI"/>
                         <outlet property="logoLabel" destination="Jko-Yd-VyF" id="7QB-SC-pmq"/>
                     </connections>
                 </viewController>
@@ -87,7 +87,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0m-uw-oe3" userLabel="facebookButton">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" backgroundImage="facebook02.png">
+                                        <state key="normal" backgroundImage="facebook.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -128,7 +128,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Pv-ql-cy8" userLabel="twitterButton">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" backgroundImage="twitter02.png">
+                                        <state key="normal" backgroundImage="twitter.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -148,7 +148,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22Y-L6-TPb" userLabel="cancelButton">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="cancel02.png">
+                                        <state key="normal" image="cancel.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -185,10 +185,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cancel02.png" width="150" height="150"/>
-        <image name="facebook02.png" width="150" height="150"/>
+        <image name="cancel.png" width="150" height="150"/>
+        <image name="facebook.png" width="150" height="150"/>
         <image name="ok.png" width="150" height="150"/>
-        <image name="twitter02.png" width="150" height="150"/>
+        <image name="twitter.png" width="150" height="150"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

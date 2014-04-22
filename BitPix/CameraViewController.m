@@ -1,6 +1,6 @@
 //
 //  LaunchViewController.m
-//  BitPix
+//  PicsPix
 //
 //  Created by Matt Holmboe Kurt McIntire on 4/4/14.
 //  Copyright (c) 2014 Vektor Digital. All rights reserved.
@@ -19,7 +19,7 @@ BOOL firstCameraLaunch;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
-@property (weak, nonatomic) IBOutlet CSAnimationView *bitPixView;
+@property (weak, nonatomic) IBOutlet CSAnimationView *PixPicsView;
 @property(nonatomic, strong) UIImagePickerController *photoPicker;
 @property (nonatomic) IBOutlet UIView *overlayView;
 @property (nonatomic, strong) NSMutableArray *pixelatedImagesArray;
@@ -52,6 +52,8 @@ BOOL firstCameraLaunch;
     [super viewDidLoad];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
+    self.pixelatedImagesArray = [NSMutableArray array];
+    
     firstLaunch = YES;
     firstCameraLaunch = YES;
 
@@ -73,7 +75,7 @@ BOOL firstCameraLaunch;
     [_logoLabel setHidden:YES];
     [self.backgroundImage setAlpha:1.0];
     [self.logoLabel setAlpha:0.0];
-    _logoLabel.font = [UIFont fontWithName:@"Extrude" size:100];
+    _logoLabel.font = [UIFont fontWithName:@"Extrude" size:85];
     
     self.pixelatedImagesArray = [NSMutableArray array];
     
@@ -175,7 +177,7 @@ BOOL firstCameraLaunch;
 
 -(void)performAnimations:(UIImage *)image
 {
-    [self.view bringSubviewToFront:self.bitPixView];
+    [self.view bringSubviewToFront:self.PixPicsView];
     [self.view startCanvasAnimation];
     [self.logoLabel setAlpha:1.0];
 
@@ -215,8 +217,6 @@ BOOL firstCameraLaunch;
 {
     
     if (self.pixelatedImagesArray.count==0) {
-
-        self.pixelatedImagesArray = [[NSMutableArray alloc]init];
         
         // build an array of images at different filter levels
         GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];

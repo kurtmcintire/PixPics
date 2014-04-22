@@ -1,6 +1,6 @@
 //
 //  PreviewViewController.m
-//  BitPix
+//  PixPics
 //
 //  Created by Matt Holmboe Kurt McIntire on 4/4/14.
 //  Copyright (c) 2014 Vektor Digital. All rights reserved.
@@ -50,8 +50,6 @@ typedef enum SocialButtonTags
 {
     [super viewWillAppear:NO];
     
-    self.pixelatedImagesArray = [NSMutableArray array];
-    
     self.initialImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     [self.initialImageView setContentMode:UIViewContentModeScaleAspectFit];
 
@@ -92,24 +90,20 @@ typedef enum SocialButtonTags
 }
 
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:NO];
-    
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    
+    self.pixelatedImagesArray = [NSMutableArray array];
+
     
     UISwipeGestureRecognizer *swipeUpGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissView)];
     [swipeUpGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionDown];
     [swipeUpGestureRecognizer setNumberOfTouchesRequired:1];
     [self.view addGestureRecognizer:swipeUpGestureRecognizer];
     
-    [_saveButton setImage:[UIImage imageNamed:@"download02.png"] forState:UIControlStateNormal];
+    [_saveButton setImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
     [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateSelected];
     [_saveButton setImage:[UIImage imageNamed:@"ok.png"] forState:UIControlStateDisabled];
 }
@@ -152,7 +146,7 @@ typedef enum SocialButtonTags
     // build an array of images at different filter levels
     GPUImagePixellateFilter *pixellateFilter = [[GPUImagePixellateFilter alloc] init];
     for (NSInteger index = 1; index < 60; index++){
-        pixellateFilter.fractionalWidthOfAPixel = index*0.00019;
+        pixellateFilter.fractionalWidthOfAPixel = index*0.0003;
         UIImage *filteredImage = [pixellateFilter imageByFilteringImage:capturedImage];
         [self.pixelatedImagesArray addObject:filteredImage];
     }
@@ -214,8 +208,6 @@ typedef enum SocialButtonTags
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-//    self.pixelatedImagesArray = nil;
-
 }
 
 
@@ -226,7 +218,7 @@ typedef enum SocialButtonTags
         SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         
         [composeViewController addImage:self.pixelatedImageView.image];
-        NSString *initalTextString = [NSString stringWithFormat:@"OMG, everything is pixelated! Check out this new app Bitpix and pixelate your life."];
+        NSString *initalTextString = [NSString stringWithFormat:@"OMG, everything is pixelated! Check out this new app PixPics and pixelate your life."];
         [composeViewController setInitialText:initalTextString];
         [self presentViewController:composeViewController animated:YES completion:nil];
 
@@ -242,7 +234,7 @@ typedef enum SocialButtonTags
         SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         
         [composeViewController addImage:self.pixelatedImageView.image];
-        NSString *initalTextString = [NSString stringWithFormat:@"OMG, everything is pixelated! Check out this new app Bitpix and pixelate your life. @bitpixapp"];
+        NSString *initalTextString = [NSString stringWithFormat:@"OMG, everything is pixelated! Check out this new app PixPics and pixelate your life. @PixPicsapp"];
         [composeViewController setInitialText:initalTextString];
         [self presentViewController:composeViewController animated:YES completion:nil];
         
@@ -299,7 +291,7 @@ typedef enum SocialButtonTags
     if(error)
     {
         alertTitle   = @"Error";
-        alertMessage = @"Oh no! We were unable to save your BitPix photo. Please try again.";
+        alertMessage = @"Oh no! We were unable to save your PixPics photo. Please try again.";
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
                                                         message:alertMessage
