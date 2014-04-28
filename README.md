@@ -11,4 +11,5 @@ To get up and running -
 2. Run a pod install in your repo folder
 
 Enjoy!
+
 -Vektor Digital
