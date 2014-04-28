@@ -12,4 +12,4 @@ To get up and running -
 
 Enjoy!
 
--Vektor Digital
+@VektorDigital
