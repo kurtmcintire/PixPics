@@ -1,5 +1,7 @@
 PixPics
 =======
+Created by Vektor Digital, LLC
+Matt Holmboe and Kurt McIntire
 
 Pixelate your photos fast.
 
